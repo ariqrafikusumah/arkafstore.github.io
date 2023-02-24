@@ -108,15 +108,15 @@ function Category() {
                             </ol>
                         </nav>
                         <div className='text-3xl font-bold mb-4 mt-10'>
-                            Produk Mobile Legends
+                            Category
                         </div>
-                        <div>
+                        {/* <div>
                             <button className=" rounded-full"><PlusCircleIcon className="w-8 hover:text-indigo-500 " onClick={() => setModalShow(true)} /></button>
                             <TambahData
                                 show={modalShow}
                                 onHide={() => setModalShow(false)}
                             />
-                        </div>
+                        </div> */}
                         <div>
                             <div className="overflow-x-auto rounded-lg">
                                 <table className="table-auto border-collapse">
@@ -135,7 +135,7 @@ function Category() {
                                         {dataTabel.map((item, index) => {
                                             return (
                                                 <>
-                                                    <tr key={item.uuid}>
+                                                    <tr key={item}>
                                                         <td className="px-6 py-4 whitespace-nowrap border">
                                                             <div className="text-sm font-medium text-gray-900">{index + 1}</div>
                                                         </td>
@@ -149,7 +149,7 @@ function Category() {
                                                             <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.thumbnail} alt={item.category} /></div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap border">
-                                                        <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.petunjuk} alt={item.category} /></div>
+                                                            <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.petunjuk} alt={item.category} /></div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap border">
                                                             <div className="text-sm font-medium text-gray-900">https://example.nelify.app{item.link}</div>
@@ -205,31 +205,34 @@ function Category() {
                             </ol>
                         </nav>
                         <div className='text-3xl font-bold mb-4 mt-10'>
-                            Produk Mobile Legends
+                            Category
                         </div>
-                        <div>
+                        {/* <div>
                             <button className=" rounded-full"><PlusCircleIcon className="w-8 hover:text-indigo-500 " onClick={() => setModalShow(true)} /></button>
                             <TambahData
                                 show={modalShow}
                                 onHide={() => setModalShow(false)}
                             />
-                        </div>
-                        <div className="overflow-x-auto rounded-lg">
-                            <table className="table-auto border-collapse">
-                                <thead className="bg-gray-50">
-                                    <tr className="bg-gray-200 text-gray-700">
-                                        <th className="py-2 px-4 border">No</th>
-                                        <th className="py-2 px-4 border">Nama Produk</th>
-                                        <th className="py-2 px-4 border">Harga (Rp)</th>
-                                        <th className="py-2 px-4 border">Gambar</th>
-                                        <th className="py-2 px-4 border">Kode Produk</th>
-                                        <th className="py-2 px-4 border">Actions</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                <div divclassName="px-6 py-4 text-center whitespace-nowrap border text-sm font-medium text-gray-900">Tidak Ada Data</div>
-                            </tbody>
+                        </div> */}
+                        <div>
+                            <div className="overflow-x-scroll rounded-lg">
+                                <table className="table-auto border-collapse">
+                                    <thead className="bg-gray-50">
+                                        <tr className="bg-gray-200 text-gray-700">
+                                            <th className="py-2 px-4 border">No</th>
+                                            <th className="py-2 px-4 border">Nama Kategori</th>
+                                            <th className="py-2 px-4 border">Deskripsi</th>
+                                            <th className="py-2 px-4 border">Gambar Kategori</th>
+                                            <th className="py-2 px-4 border">Gambar Petunjuk</th>
+                                            <th className="py-2 px-4 border">URL</th>
+                                            <th className="py-2 px-4 border">Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    <div divclassName="px-6 py-4 text-center whitespace-nowrap border text-sm font-medium text-gray-900">Tidak Ada Data</div>
+                                </tbody>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -238,100 +241,13 @@ function Category() {
     }
 }
 
-
-function TambahData(props) {
-    const [product_name, setProduct_name] = useState("");
-    const [price, setPrice] = useState("");
-    const [picture, setPicture] = useState("");
-    const [code, setCode] = useState("");
-
-    const handleDataChange1 = (e) => {
-        setProduct_name(e.target.value)
-    }
-    const handleDataChange2 = (e) => {
-        setPrice(e.target.value)
-    }
-    const handleDataChange3 = (e) => {
-        setPicture(e.target.value)
-    }
-    const handleDataChange4 = (e) => {
-        setCode(e.target.value)
-    }
-    // ** Write
-    const handleOnSubmit = () => {
-        const uuid = uid();
-        set(ref(db, `/product-ml/${uuid}`), {
-            product_name,
-            price,
-            picture,
-            code,
-            uuid,
-        });
-        setProduct_name("");
-        setPrice("");
-        setPicture("");
-        setCode("");
-        props.onHide();
-        console.log('Data Produk Mlbb Berahasil Ditambah', handleOnSubmit);
-    }
-    return (
-        <>
-            <Form onSubmit={handleOnSubmit}>
-                <Modal
-                    {...props}
-                    size="lg"
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title-vcenter">
-                            Tambah Data
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FloatingLabel
-                            controlId="floatingProduct_name"
-                            label="Nama Produk"
-                            className="mb-3"
-                        >
-                            <FormControl type="text" value={product_name} onChange={handleDataChange1} placeholder='Nama Produk' />
-                        </FloatingLabel>
-
-                        <FloatingLabel
-                            controlId="floatingInput"
-                            label="Harga Produk"
-                            className="mb-3"
-                        >
-                            <FormControl type="text" value={price} onChange={handleDataChange2} placeholder='Harga Produk' />
-                        </FloatingLabel>
-
-                        <FloatingLabel
-                            controlId="floatingInput"
-                            label="URL gambar (https://example.com/)"
-                            className="mb-3"
-                        >
-                            <FormControl type="url" value={picture} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' />
-                        </FloatingLabel>
-
-                        <FloatingLabel
-                            controlId="floatingInput"
-                            label="Kode Produk"
-                            className="mb-3"
-                        >
-                            <FormControl type="text" value={code} onChange={handleDataChange4} placeholder='Kode Produk' />
-                        </FloatingLabel>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className='bg-red-500' onClick={props.onHide}>Close</Button>
-                        <Button type='submit' onClick={handleOnSubmit} className='bg-indigo-500 '>Save</Button>
-                    </Modal.Footer>
-                </Modal>
-            </Form>
-        </>
-    )
-}
-
 function EditData(props) {
+
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState("");
+    const [link, setLink] = useState("");
+    const [petunjuk, setPetunjuk] = useState("");
+    const [thumbnail, setThumbnail] = useState("");
     const [product_name, setProduct_name] = useState("");
     const [price, setPrice] = useState("");
     const [picture, setPicture] = useState("");
@@ -344,16 +260,16 @@ function EditData(props) {
     }, [props.uuid]);
 
     const handleDataChange1 = (e) => {
-        setProduct_name(e.target.value)
+        setCategory(e.target.value)
     }
     const handleDataChange2 = (e) => {
-        setPrice(e.target.value)
+        setDescription(e.target.value)
     }
     const handleDataChange3 = (e) => {
-        setPicture(e.target.value)
+        setPetunjuk(e.target.value)
     }
     const handleDataChange4 = (e) => {
-        setCode(e.target.value)
+        setThumbnail(e.target.value)
     }
 
     // ** Update
@@ -361,17 +277,18 @@ function EditData(props) {
         console.log("tempUuid :", tempUuid);
         e.preventDefault();
         if (tempUuid) {
-            update(ref(db, `/product-ml/${tempUuid}`), {
-                product_name,
-                price,
-                picture,
-                code,
+            update(ref(db, `/categories/${tempUuid}`), {
+                category,
+                description,
+                link,
+                petunjuk,
+                thumbnail,
                 uuid: tempUuid,
             });
-            setProduct_name('');
-            setPrice('');
-            setPicture('');
-            setCode('');
+            setCategory('');
+            setDescription('');
+            setPetunjuk('');
+            setThumbnail('');
             props.onHide();
         }
     };
@@ -391,23 +308,23 @@ function EditData(props) {
                     </Modal.Header>
                     <Modal.Body>
                         <FloatingLabel
-                            controlId="floatingProduct_name"
-                            label="Nama Produk"
+                            controlId="floatingCategory"
+                            label="Category"
                             className="mb-3"
                         >
-                            <FormControl type="text" value={product_name} onChange={handleDataChange1} placeholder='Nama Produk' />
+                            <FormControl type="text" value={product_name} onChange={handleDataChange1} placeholder='Category' />
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
-                            label="Harga Produk"
+                            controlId="floatingDescription"
+                            label="Description"
                             className="mb-3"
                         >
-                            <FormControl type="text" value={price} onChange={handleDataChange2} placeholder='Harga Produk' />
+                            <FormControl type="text" as="textarea" value={price} onChange={handleDataChange2} placeholder='Description' />
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingPetunjuk"
                             label="URL gambar (https://example.com/)"
                             className="mb-3"
                         >
@@ -415,11 +332,11 @@ function EditData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
-                            label="Kode Produk"
+                            controlId="floatingThumbnail"
+                            label="Thumbnail"
                             className="mb-3"
                         >
-                            <FormControl type="text" value={code} onChange={handleDataChange4} placeholder='Kode Produk' />
+                            <FormControl type="text" value={code} onChange={handleDataChange4} placeholder='Thumbnail' />
                         </FloatingLabel>
                     </Modal.Body>
                     <Modal.Footer>

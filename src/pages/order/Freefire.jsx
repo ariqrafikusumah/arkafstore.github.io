@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
 
-export default function MobileLegends() {
+export default function Freefire() {
     // ** Modal Petunjuk
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -25,25 +25,14 @@ export default function MobileLegends() {
     const handleChangeUser_id = (event) => {
         const inputNumberUser_id = event.target.value.replace(/\D/g, '');
         // Remove non-numeric characters from the input
-        if (inputNumberUser_id.length <= 10) {
+        if (inputNumberUser_id.length <= 25) {
             setUser_id(inputNumberUser_id);
             setErrorUser_id('');
         } else {
-            setErrorUser_id('Bagian ini dapat diisi maksimal 10 karakter');
+            setErrorUser_id('Bagian ini dapat diisi maksimal 25 karakter');
         }
     };
 
-    // ** Max Input Number 5 Digit
-    const handleChangeZone_id = (event) => {
-        const inputNumberZone_id = event.target.value.replace(/\D/g, '');
-        // Remove non-numeric characters from the input
-        if (inputNumberZone_id.length <= 5) {
-            setZone_id(inputNumberZone_id);
-            setErrorZone_id('');
-        } else {
-            setErrorZone_id('Bagian ini dapat diisi maksimal 5 karakter');
-        }
-    };
     const generateRandomValue = () => {
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let result = "";
@@ -56,7 +45,7 @@ export default function MobileLegends() {
 
     // ** Read Data APi category
     const [dataCategory, setDataCategory] = useState([]);
-    const id = '-NOQFV4o7ZV2Xzae7eSr';
+    const id = '-NOQNACFEFS2UOJlYW-X';
 
     useEffect(() => {
         // setisLoading(true);
@@ -76,7 +65,7 @@ export default function MobileLegends() {
 
     useEffect(() => {
         setisLoading(true);
-        onValue(ref(db, `/product-ml`), (snapshot) => {
+        onValue(ref(db, `/product-ff`), (snapshot) => {
             setDataProduct([]);
             const data = snapshot.val();
             if (data !== null) {
@@ -151,7 +140,6 @@ export default function MobileLegends() {
         console.log(handleSubmit);
         const phone_whatsapp = '6281281444295';
         const user_id = event.target.user_id.value;
-        const zone_id = event.target.zone_id.value;
         const category = event.target.category.value;
         const productsId = document.querySelector('input[name="product"]:checked');
         const productsValue = document.querySelector('input[name="product"]:checked').value;
@@ -164,7 +152,7 @@ export default function MobileLegends() {
         const nama = event.target.nama.value;
         const randomValue = generateRandomValue();
         setInputValue(randomValue);
-        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
+        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
         window.open(url);
     };
 
@@ -185,7 +173,7 @@ export default function MobileLegends() {
                 <div>
                     <div className='grid xl:grid-cols-2 lg:grid-cols-2 xl:px-52 lg:px-32 md:px-5 sm:px-5 xs:px-2 mt-3'>
                         <div className=' rounded-xl xl:w-96 lg:w-96 lg:h-72'>
-                            <div className='xl:px-auto xl:py-auto '>
+                            <div className='xl:px-5 xl:py-6 '>
                                 {dataCategory.map((item) => (
                                     <>
                                         <div key={item}>
@@ -216,7 +204,7 @@ export default function MobileLegends() {
                                         <div className='font-bold text-lg'>
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>1</span>&nbsp;Masukkan User ID
                                         </div>
-                                        <div className='xl:grid xl:grid-cols-2 lg:grid-cols-1 lg:grid md:grid-cols-2 md:grid sm:grid sm:grid-cols-1 xs:grid xs:grid-cols-1 xss:grid xss:grid-cols-1 gap-x-8 gap-y-4 px-2 py-2 mb-2'>
+                                        <div className='xl:grid xl:grid-cols-1 lg:grid-cols-1 lg:grid md:grid-cols-2 md:grid sm:grid sm:grid-cols-1 xs:grid xs:grid-cols-1 xss:grid xss:grid-cols-1 gap-x-8 gap-y-4 px-2 py-2 mb-2'>
                                             <div className="relative">
                                                 {dataCategory.map((item) => (
                                                     <>
@@ -229,16 +217,11 @@ export default function MobileLegends() {
                                                 <label htmlFor="user_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Masukkan User ID</label>
                                                 {errorUser_id && <div className="errorUser_id text-sm text-red-500 sm:mb-3">{errorUser_id}</div>}
                                             </div>
-                                            <div className="relative">
-                                                <input type="number" id="zone_id" name='zone_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="(                 ) " maxLength="5" value={zone_id} onChange={handleChangeZone_id} required />
-                                                <label htmlFor="zone_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">&nbsp; &nbsp;Zone ID </label>
-                                                {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
-                                            </div>
                                         </div>
                                         <div>
                                             <div className='px-2'>
                                                 <div className=' font-thin italic text-justify text-xs mb-2'>
-                                                    Untuk mengetahui User ID Anda, silakan klik menu profile dibagian kiri atas pada menu utama game. User ID akan terlihat dibagian bawah Nama Karakter Game Anda. Silakan masukkan User ID Anda untuk menyelesaikan transaksi. Contoh : 12345678 (1234).
+                                                    Untuk menemukan ID Anda, klik pada ikon karakter. User ID tercantum di bawah nama karakter Anda. Contoh: '5363266446'.
                                                 </div>
                                                 <Button className="flex gap-2 mt-3 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" onClick={handleShow}>
                                                     Petunjuk
