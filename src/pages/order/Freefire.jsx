@@ -17,9 +17,7 @@ export default function Freefire() {
 
     const [inputValue, setInputValue] = useState('');
     const [user_id, setUser_id] = useState('');
-    const [zone_id, setZone_id] = useState('');
     const [errorUser_id, setErrorUser_id] = useState('');
-    const [errorZone_id, setErrorZone_id] = useState('');
 
     // ** Max Input Number 10 Digit
     const handleChangeUser_id = (event) => {
@@ -185,12 +183,12 @@ export default function Freefire() {
                                 ))}
                                 <div className='flex flex-cols-2 gap-2 mt-3'>
                                     <div>
-                                        <a href="https://apps.apple.com/app/id1160056295?country=my" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://apps.apple.com/US/app/id1300146617?mt=8" target="_blank" rel="noopener noreferrer">
                                             <img src="https://d1qgcmfii0ptfa.cloudfront.net/S/content/mobile/images/app_store_coda.png" alt="" />
                                         </a>
                                     </div>
                                     <div>
-                                        <a href="https://play.google.com/store/apps/details?id=com.mobile.legends&country=my" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" rel="noopener noreferrer">
                                             <img src="https://d1qgcmfii0ptfa.cloudfront.net/S/content/mobile/images/google_play_coda.png" alt="" />
                                         </a>
                                     </div>

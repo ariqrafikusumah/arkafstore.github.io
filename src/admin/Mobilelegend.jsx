@@ -15,6 +15,10 @@ function Mobilelegend() {
     const [modalShow2, setModalShow2] = React.useState(false);
     const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
+    const [product_name, setProduct_name] = useState('');
+    const [price, setPrice] = useState('');
+    const [picture, setPicture] = useState('');
+    const [code, setCode] = useState('');
     const [tempUuid, setTempUuid] = useState('');
 
     // ** Read
@@ -63,8 +67,19 @@ function Mobilelegend() {
 
     //** Update
     const handleUpdate = (item) => {
-        console.log('Update Button', item.uuid);
+        console.log(
+            'Update Button',
+            'uuid :', item.uuid,
+            'product name :', item.product_name,
+            'price :', item.price,
+            'picture :', item.picture,
+            'code :', item.code
+        );
         setModalShow2(true, item.uuid);
+        setProduct_name(item.product_name);
+        setPrice(item.price);
+        setPicture(item.picture);
+        setCode(item.code);
         setTempUuid(item.uuid);
     };
 
@@ -158,6 +173,10 @@ function Mobilelegend() {
                                                                 <EditData
                                                                     show={modalShow2}
                                                                     onHide={() => setModalShow2(false)}
+                                                                    product_name={product_name}
+                                                                    price={price}
+                                                                    picture={picture}
+                                                                    code={code}
                                                                     uuid={tempUuid}
                                                                 />
                                                             </div>
@@ -334,11 +353,27 @@ function TambahData(props) {
 }
 
 function EditData(props) {
-    const [product_name, setProduct_name] = useState("");
-    const [price, setPrice] = useState("");
-    const [picture, setPicture] = useState("");
-    const [code, setCode] = useState("");
+    const [product_name, setProduct_name] = useState(props.product_name || "");
+    const [price, setPrice] = useState(props.price || "");
+    const [picture, setPicture] = useState(props.picture || "");
+    const [code, setCode] = useState(props.code || "");
     const [tempUuid, setTempUuid] = useState(props.uuid || "");
+
+    useEffect(() => {
+        setProduct_name(props.product_name || "");
+    }, [props.product_name]);
+
+    useEffect(() => {
+        setPrice(props.price || "");
+    }, [props.price]);
+
+    useEffect(() => {
+        setPicture(props.picture || "");
+    }, [props.picture]);
+
+    useEffect(() => {
+        setCode(props.code || "");
+    }, [props.code]);
 
     useEffect(() => {
         // Update nilai tempUuid saat props.uuid berubah

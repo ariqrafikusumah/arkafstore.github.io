@@ -12,6 +12,9 @@ import Mobilelegends from "./pages/order/Mobilelegends";
 import Category from "./admin/Category";
 import Login from "./admin/Login";
 import Freefire from "./pages/order/Freefire";
+import TermsAndCondition from "./pages/TermAndCondition";
+import Tentang from "./pages/Tentang";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
       <NavbarTop />
       <Routes>
         <Route path="/" element={<Beranda />} />
+        <Route path="/Terms" element={<TermsAndCondition />} />
+        <Route path="/Tentang" element={<Tentang />} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/admin/login" element={<Login />} />
         <Route path="/order/free-fire" element={<Freefire />} />
         <Route path="/admin/free-fire" element={<FreeFire/>} />
