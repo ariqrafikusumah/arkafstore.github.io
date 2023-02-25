@@ -81,7 +81,7 @@ export default function MobileLegends() {
             const data = snapshot.val();
             if (data !== null) {
                 Object.values(data).map((item) => {
-                    setDataProduct((oldArray) => [...oldArray, item]);
+                    setDataProduct((oldArray) => [...oldArray, item].sort((a, b) => a.price - b.price));
                 });
                 setisLoading(false);
             } else {

@@ -320,7 +320,7 @@ function EditData(props) {
                             label="Description"
                             className="mb-3"
                         >
-                            <FormControl type="text" as="textarea" value={price} onChange={handleDataChange2} placeholder='Description' />
+                            <FormControl type="text" as="textarea" style={{ height: '100px' }} value={price} onChange={handleDataChange2} placeholder='Description' />
                         </FloatingLabel>
 
                         <FloatingLabel

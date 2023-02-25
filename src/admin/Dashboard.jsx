@@ -4,7 +4,7 @@ import { BuildingLibraryIcon, QrCodeIcon, TagIcon, WalletIcon } from '@heroicons
 function Dashboard() {
   return (
     <>
-      <div className="container xl:px-52 lg:px-32 md:px-5 xs:px-5">
+      <div className="container xl:px-52 lg:px-32 md:px-5 xs:px-5 mt-5">
 
         <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 mt-3" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -72,7 +72,7 @@ function Dashboard() {
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Payment</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="/admin/MobileLegend" className=' no-underline'>
+          <a href="/admin/qris" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>

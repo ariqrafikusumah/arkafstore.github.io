@@ -51,7 +51,7 @@ function Freefire() {
             const data = snapshot.val();
             if (data !== null) {
                 Object.values(data).map((item) => {
-                    setDataTabel((oldArray) => [...oldArray, item]);
+                    setDataTabel((oldArray) => [...oldArray, item].sort((a, b) => a.price - b.price));
                 });
             } else {
                 setisError(true);

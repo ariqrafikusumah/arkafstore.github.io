@@ -10,7 +10,7 @@ import { set, ref, onValue, remove, update } from "firebase/database";
 
 
 function Mobilelegend() {
-    const [dataTabel, setDataTabel] = useState("");
+    const [dataTabel, setDataTabel] = useState([]);
     const [modalShow, setModalShow] = React.useState(false);
     const [modalShow2, setModalShow2] = React.useState(false);
     const [isLoading, setisLoading] = useState(true);
@@ -21,7 +21,7 @@ function Mobilelegend() {
     const [code, setCode] = useState('');
     const [tempUuid, setTempUuid] = useState('');
 
-    // ** Read
+    // ** Read 
     useEffect(() => {
         onValue(ref(db, `/product-ml`), (snapshot) => {
             let timerInterval
@@ -51,7 +51,7 @@ function Mobilelegend() {
             const data = snapshot.val();
             if (data !== null) {
                 Object.values(data).map((item) => {
-                    setDataTabel((oldArray) => [...oldArray, item]);
+                    setDataTabel((oldArray) => [...oldArray, item].sort((a, b) => a.price - b.price));
                 });
             } else {
                 setisError(true);
@@ -420,6 +420,7 @@ function EditData(props) {
                     size="lg"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
+                    animation={false}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
@@ -436,7 +437,7 @@ function EditData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingPrice"
                             label="Harga Produk"
                             className="mb-3"
                         >
@@ -444,7 +445,7 @@ function EditData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingPicture"
                             label="URL gambar (https://example.com/)"
                             className="mb-3"
                         >
@@ -452,7 +453,7 @@ function EditData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingCode"
                             label="Kode Produk"
                             className="mb-3"
                         >
