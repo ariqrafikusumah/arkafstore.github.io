@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { db } from "../database/firebase";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getDatabase, ref, set } from 'firebase/database';
+import { ref, set } from 'firebase/database';
 
 // Fungsi untuk melakukan sign in
 async function signIn(email, password) {

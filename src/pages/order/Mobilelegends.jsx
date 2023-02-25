@@ -4,8 +4,24 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
+// import Recaptcha from 'react-recaptcha';
 
 export default function MobileLegends() {
+
+
+    // // ** ReCAPTCHA
+    // const key = "6LcdtbMkAAAAAIjXZe3mlkAToEd319eq2ozekzOS";
+    // const [isCaptchaVerified, setCaptchaVerified] = useState(false);
+    // // specifying your onload callback function
+    // const callback = function () {
+    //     console.log('Done!!!!');
+    // };
+    // // specifying verify callback function
+    // const verifyCallback = function (response) {
+    //     console.log(response);
+    //     setCaptchaVerified(true);
+    // };
+
     // ** Modal Petunjuk
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -149,23 +165,25 @@ export default function MobileLegends() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(handleSubmit);
-        const phone_whatsapp = '6281281444295';
-        const user_id = event.target.user_id.value;
-        const zone_id = event.target.zone_id.value;
-        const category = event.target.category.value;
-        const productsId = document.querySelector('input[name="product"]:checked');
-        const productsValue = document.querySelector('input[name="product"]:checked').value;
-        const products = productsId.id;
-        const products_price = productsValue;
-        const paymentId = document.querySelector('input[name="payment"]:checked');
-        const paymentValue = document.querySelector('input[name="payment"]:checked').value;
-        const payment = paymentId.id;
-        const payment_number_account = paymentValue;
-        const nama = event.target.nama.value;
-        const randomValue = generateRandomValue();
-        setInputValue(randomValue);
-        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
-        window.open(url);
+
+            const phone_whatsapp = '6281281444295';
+            const user_id = event.target.user_id.value;
+            const zone_id = event.target.zone_id.value;
+            const category = event.target.category.value;
+            const productsId = document.querySelector('input[name="product"]:checked');
+            const productsValue = document.querySelector('input[name="product"]:checked').value;
+            const products = productsId.id;
+            const products_price = productsValue;
+            const paymentId = document.querySelector('input[name="payment"]:checked');
+            const paymentValue = document.querySelector('input[name="payment"]:checked').value;
+            const payment = paymentId.id;
+            const payment_number_account = paymentValue;
+            const nama = event.target.nama.value;
+            const randomValue = generateRandomValue();
+            setInputValue(randomValue);
+            const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
+            window.open(url);
+
     };
 
     if (isLoading) return (
@@ -338,6 +356,14 @@ export default function MobileLegends() {
                                             <div className="relative mt-3">
                                                 <input type="text" id="costumer" name='nama' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                                                 <label htmlFor="costumer" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Masukkan Nama Anda</label>
+                                            </div>
+                                            <div>
+                                                {/* <Recaptcha
+                                                    sitekey={key}
+                                                    render="explicit"
+                                                    verifyCallback={verifyCallback}
+                                                    onloadCallback={callback}
+                                                /> */}
                                             </div>
                                             <div>
                                                 <input type="text" value={inputValue} name="kode_order" hidden />

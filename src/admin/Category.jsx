@@ -243,16 +243,20 @@ function Category() {
 
 function EditData(props) {
 
-    const [category, setCategory] = useState("");
-    const [description, setDescription] = useState("");
-    const [link, setLink] = useState("");
-    const [petunjuk, setPetunjuk] = useState("");
-    const [thumbnail, setThumbnail] = useState("");
-    const [product_name, setProduct_name] = useState("");
-    const [price, setPrice] = useState("");
-    const [picture, setPicture] = useState("");
-    const [code, setCode] = useState("");
+    const [category, setCategory] = useState(props.category || "");
+    const [description, setDescription] = useState(props.description || "");
+    const [link, setLink] = useState(props.link || "");
+    const [petunjuk, setPetunjuk] = useState(props.petunjuk || "");
+    const [thumbnail, setThumbnail] = useState(props.thumbnail || "");
     const [tempUuid, setTempUuid] = useState(props.uuid || "");
+
+    useEffect(() => {
+        setTempUuid(props.category || "");
+    }, [props.category]);
+
+    useEffect(() => {
+        setTempUuid(props.description || "");
+    }, [props.description]);
 
     useEffect(() => {
         // Update nilai tempUuid saat props.uuid berubah
@@ -312,7 +316,7 @@ function EditData(props) {
                             label="Category"
                             className="mb-3"
                         >
-                            <FormControl type="text" value={product_name} onChange={handleDataChange1} placeholder='Category' />
+                            <FormControl type="text" value={category} onChange={handleDataChange1} placeholder='Category' />
                         </FloatingLabel>
 
                         <FloatingLabel
@@ -320,7 +324,7 @@ function EditData(props) {
                             label="Description"
                             className="mb-3"
                         >
-                            <FormControl type="text" as="textarea" style={{ height: '100px' }} value={price} onChange={handleDataChange2} placeholder='Description' />
+                            <FormControl type="text" as="textarea" style={{ height: '100px' }} value={description} onChange={handleDataChange2} placeholder='Description' />
                         </FloatingLabel>
 
                         <FloatingLabel
@@ -328,7 +332,7 @@ function EditData(props) {
                             label="URL gambar (https://example.com/)"
                             className="mb-3"
                         >
-                            <FormControl type="url" value={picture} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' />
+                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' />
                         </FloatingLabel>
 
                         <FloatingLabel
@@ -336,7 +340,7 @@ function EditData(props) {
                             label="Thumbnail"
                             className="mb-3"
                         >
-                            <FormControl type="text" value={code} onChange={handleDataChange4} placeholder='Thumbnail' />
+                            <FormControl type="text" value={thumbnail} onChange={handleDataChange4} placeholder='Thumbnail' />
                         </FloatingLabel>
                     </Modal.Body>
                     <Modal.Footer>

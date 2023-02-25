@@ -56,7 +56,7 @@ function Beranda() {
   return (
     <>
       <PopUp isOpen={isOpen} onClose={handleClose} />
-      <div className='xl:px-52 lg:px-32 md:px-5 xs:px-5'>
+      <div className='xl:px-52 lg:px-32 md:px-5 xs:px-5 '>
         <div>
           <Carousel />
         </div>
