@@ -292,8 +292,8 @@ function TambahData(props) {
         setPrice("");
         setPicture("");
         setCode("");
+        window.location.reload();
         props.onHide('');
-        console.log('Data Produk Mlbb Berahasil Ditambah', handleOnSubmit);
     }
     return (
         <>
@@ -409,6 +409,7 @@ function EditData(props) {
             setPrice('');
             setPicture('');
             setCode('');
+            window.location.reload();
             props.onHide();
         }
     };

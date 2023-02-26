@@ -12,12 +12,12 @@ function Category() {
     const [modalShow2, setModalShow2] = React.useState(false);
     const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
-    const [category, setCategory] = useState([]);
-    const [description, setDescription] = useState([]);
-    const [link, setLink] = useState([]);
-    const [petunjuk, setPetunjuk] = useState([]);
-    const [thumbnail, setThumbnail] = useState([]);
-    const [tempUuid, setTempUuid] = useState([]);
+    const [category, setCategory] = useState('');
+    const [description, setDescription] = useState('');
+    const [link, setLink] = useState('');
+    const [petunjuk, setPetunjuk] = useState('');
+    const [thumbnail, setThumbnail] = useState('');
+    const [tempUuid, setTempUuid] = useState('');
 
     // ** Read
     useEffect(() => {
@@ -60,7 +60,7 @@ function Category() {
 
     //** Update
     const handleUpdate = (item) => {
-        console.log('Update Button', item.uuid);
+        console.log('Update Button', item.uuid, item.petunjuk);
         setModalShow2(true, item.uuid);
         setCategory(item.category);
         setDescription(item.description);
@@ -270,6 +270,10 @@ function EditData(props) {
     }, [props.link]);
 
     useEffect(() => {
+        setPetunjuk(props.petunjuk || "");
+    }, [props.petunjuk]);
+
+    useEffect(() => {
         setThumbnail(props.thumbnail || "");
     }, [props.thumbnail]);
 
@@ -285,9 +289,12 @@ function EditData(props) {
         setDescription(e.target.value)
     }
     const handleDataChange3 = (e) => {
-        setPetunjuk(e.target.value)
+        setLink(e.target.value)
     }
     const handleDataChange4 = (e) => {
+        setPetunjuk(e.target.value)
+    }
+    const handleDataChange5 = (e) => {
         setThumbnail(e.target.value)
     }
 
@@ -309,6 +316,7 @@ function EditData(props) {
             setLink('');
             setPetunjuk('');
             setThumbnail('');
+            window.location.reload();
             props.onHide();
         }
     };
@@ -344,19 +352,27 @@ function EditData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingPetunjuk"
-                            label="URL gambar (https://example.com/)"
+                            controlId="floatingLink"
+                            label="URL Category"
                             className="mb-3"
                         >
-                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' readOnly disabled/>
+                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' readOnly/>
                         </FloatingLabel>
 
+                        <FloatingLabel
+                            controlId="floatingPetunjuk"
+                            label="Petunjuk"
+                            className="mb-3"
+                        >
+                            <FormControl type="url" value={petunjuk} onChange={handleDataChange4} placeholder='Petunjuk' />
+                        </FloatingLabel>
+                        
                         <FloatingLabel
                             controlId="floatingThumbnail"
                             label="Thumbnail"
                             className="mb-3"
                         >
-                            <FormControl type="text" value={thumbnail} onChange={handleDataChange4} placeholder='Thumbnail' />
+                            <FormControl type="url" value={thumbnail} onChange={handleDataChange5} placeholder='Thumbnail' />
                         </FloatingLabel>
                     </Modal.Body>
                     <Modal.Footer>
