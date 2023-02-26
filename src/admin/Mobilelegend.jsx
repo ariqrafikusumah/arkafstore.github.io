@@ -10,16 +10,16 @@ import { set, ref, onValue, remove, update } from "firebase/database";
 
 
 function Mobilelegend() {
-    const [dataTabel, setDataTabel] = useState([]);
+    const [dataTabel, setDataTabel] = useState("");
     const [modalShow, setModalShow] = React.useState(false);
     const [modalShow2, setModalShow2] = React.useState(false);
     const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
-    const [product_name, setProduct_name] = useState('');
-    const [price, setPrice] = useState('');
-    const [picture, setPicture] = useState('');
-    const [code, setCode] = useState('');
-    const [tempUuid, setTempUuid] = useState('');
+    const [product_name, setProduct_name] = useState([]);
+    const [price, setPrice] = useState([]);
+    const [picture, setPicture] = useState([]);
+    const [code, setCode] = useState([]);
+    const [tempUuid, setTempUuid] = useState([]);
 
     // ** Read 
     useEffect(() => {
@@ -319,7 +319,7 @@ function TambahData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingPrice"
                             label="Harga Produk"
                             className="mb-3"
                         >
@@ -327,7 +327,7 @@ function TambahData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingPicture"
                             label="URL gambar (https://example.com/)"
                             className="mb-3"
                         >
@@ -335,7 +335,7 @@ function TambahData(props) {
                         </FloatingLabel>
 
                         <FloatingLabel
-                            controlId="floatingInput"
+                            controlId="floatingCode"
                             label="Kode Produk"
                             className="mb-3"
                         >
@@ -395,7 +395,7 @@ function EditData(props) {
 
     // ** Update
     const handleSubmitChange = (e) => {
-        console.log("tempUuid :", tempUuid);
+        console.log("tempUuid :", product_name, price, picture, code, tempUuid);
         e.preventDefault();
         if (tempUuid) {
             update(ref(db, `/product-ml/${tempUuid}`), {
@@ -421,6 +421,7 @@ function EditData(props) {
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
                     animation={false}
+                    backdrop="static"
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">

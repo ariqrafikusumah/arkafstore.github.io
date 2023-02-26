@@ -19,10 +19,10 @@ function FooterBot() {
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">GAME POPULAR</h2>
               <div className="text-gray-600">
                 <div className="mb-4">
-                  <a href="/id/MobileLegends" className="text-gray-600 no-underline hover:underline">Mobile Legends</a>
+                  <a href="/order/mobile-legends" className="text-gray-600 no-underline hover:underline">Mobile Legends</a>
                 </div>
                 <div className="mb-4">
-                  <a href="/id/FreeFire" className="text-gray-600 no-underline hover:underline">Free Fire</a>
+                  <a href="/order/free-fire" className="text-gray-600 no-underline hover:underline">Free Fire</a>
                 </div>
               </div>
             </div>

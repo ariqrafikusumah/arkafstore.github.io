@@ -5,7 +5,6 @@ function Dashboard() {
   return (
     <>
       <div className="container xl:px-52 lg:px-32 md:px-5 xs:px-5 mt-5">
-
         <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 mt-3" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
@@ -83,32 +82,34 @@ function Dashboard() {
                   <p className="text-gray-700 text-lg font-bold">Edit Payment</p>
                 </div>
               </div>
-
             </div>
           </a>
-          <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
-            <div className='flex gap-2'>
-              <div className='py-3'>
-                <BuildingLibraryIcon className='w-8 h-8' />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold mb-2">Bank</h2>
-                <p className="text-gray-700 text-lg font-bold">Edit Payment</p>
-              </div>
-            </div>
-
-          </div>
-          <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
-            <div className='flex gap-2'>
-              <div className='py-3'>
-                <WalletIcon className='w-8 h-8' />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold mb-2">E-Wallet</h2>
-                <p className="text-gray-700 text-lg font-bold">Edit Payment</p>
+          <a href="/admin/bank" className=' no-underline'>
+            <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <BuildingLibraryIcon className='w-8 h-8' />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Bank</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit Payment</p>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
+          <a href="/admin/e-wallet" className=' no-underline'>
+            <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <WalletIcon className='w-8 h-8' />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">E-Wallet</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit Payment</p>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Category</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

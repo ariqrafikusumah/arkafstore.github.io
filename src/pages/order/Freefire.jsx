@@ -6,20 +6,22 @@ import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
 
 export default function Freefire() {
+
     // ** Modal Petunjuk
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     // ** Loading Screen
-    const [isLoading, setisLoading] = useState(false);
+    const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
 
+    // ** Input Value ID
     const [inputValue, setInputValue] = useState('');
     const [user_id, setUser_id] = useState('');
     const [errorUser_id, setErrorUser_id] = useState('');
 
-    // ** Max Input Number 10 Digit
+    // ** Max Input Number 25 Digit
     const handleChangeUser_id = (event) => {
         const inputNumberUser_id = event.target.value.replace(/\D/g, '');
         // Remove non-numeric characters from the input
@@ -31,6 +33,7 @@ export default function Freefire() {
         }
     };
 
+    // ** Generate RefId
     const generateRandomValue = () => {
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let result = "";
@@ -45,8 +48,8 @@ export default function Freefire() {
     const [dataCategory, setDataCategory] = useState([]);
     const id = '-NOQNACFEFS2UOJlYW-X';
 
+    // ** Mengambil Data Category
     useEffect(() => {
-        // setisLoading(true);
         onValue(ref(db, `/categories/${id}`), (snapshot) => {
             const data = snapshot.val();
             if (data !== null) {
@@ -62,7 +65,6 @@ export default function Freefire() {
     const [dataProduct, setDataProduct] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/product-ff`), (snapshot) => {
             setDataProduct([]);
             const data = snapshot.val();
@@ -81,7 +83,6 @@ export default function Freefire() {
     const [dataPaymentQris, setDataPaymentQris] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/payment-qris`), (snapshot) => {
             setDataPaymentQris([]);
             const data = snapshot.val();
@@ -100,7 +101,6 @@ export default function Freefire() {
     const [dataPaymentBank, setDataPaymentBank] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/payment-bank`), (snapshot) => {
             setDataPaymentBank([]);
             const data = snapshot.val();
@@ -119,7 +119,6 @@ export default function Freefire() {
     const [dataPaymentWallet, setDataPaymentWallet] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/payment-wallet`), (snapshot) => {
             setDataPaymentWallet([]);
             const data = snapshot.val();

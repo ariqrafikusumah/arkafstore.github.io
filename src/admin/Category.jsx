@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { uid } from 'uid'
 import { db } from '../database/firebase'
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 import { FloatingLabel, Form, FormControl } from 'react-bootstrap';
-import { set, ref, onValue, remove, update } from "firebase/database";
+import { ref, onValue, update } from "firebase/database";
 
 
 function Category() {
     const [dataTabel, setDataTabel] = useState("");
-    const [modalShow, setModalShow] = React.useState(false);
     const [modalShow2, setModalShow2] = React.useState(false);
     const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
-    const [tempUuid, setTempUuid] = useState('');
+    const [category, setCategory] = useState([]);
+    const [description, setDescription] = useState([]);
+    const [link, setLink] = useState([]);
+    const [petunjuk, setPetunjuk] = useState([]);
+    const [thumbnail, setThumbnail] = useState([]);
+    const [tempUuid, setTempUuid] = useState([]);
 
     // ** Read
     useEffect(() => {
@@ -56,15 +58,15 @@ function Category() {
         console.log("Data has been Read to database");
     }, []);
 
-    // ** Delete
-    const handleDelete = (item) => {
-        remove(ref(db, `/categories/${item.uuid}`));
-    };
-
     //** Update
     const handleUpdate = (item) => {
         console.log('Update Button', item.uuid);
         setModalShow2(true, item.uuid);
+        setCategory(item.category);
+        setDescription(item.description);
+        setLink(item.link);
+        setPetunjuk(item.petunjuk);
+        setThumbnail(item.thumbnail);
         setTempUuid(item.uuid);
     };
 
@@ -162,6 +164,11 @@ function Category() {
                                                                 <EditData
                                                                     show={modalShow2}
                                                                     onHide={() => setModalShow2(false)}
+                                                                    category={category}
+                                                                    description={description}
+                                                                    link={link}
+                                                                    petunjuk={petunjuk}
+                                                                    thumbnail={thumbnail}
                                                                     uuid={tempUuid}
                                                                 />
                                                             </div>
@@ -251,12 +258,20 @@ function EditData(props) {
     const [tempUuid, setTempUuid] = useState(props.uuid || "");
 
     useEffect(() => {
-        setTempUuid(props.category || "");
+        setCategory(props.category || "");
     }, [props.category]);
 
     useEffect(() => {
-        setTempUuid(props.description || "");
+        setDescription(props.description || "");
     }, [props.description]);
+
+    useEffect(() => {
+        setLink(props.link || "");
+    }, [props.link]);
+
+    useEffect(() => {
+        setThumbnail(props.thumbnail || "");
+    }, [props.thumbnail]);
 
     useEffect(() => {
         // Update nilai tempUuid saat props.uuid berubah
@@ -291,6 +306,7 @@ function EditData(props) {
             });
             setCategory('');
             setDescription('');
+            setLink('');
             setPetunjuk('');
             setThumbnail('');
             props.onHide();
@@ -332,7 +348,7 @@ function EditData(props) {
                             label="URL gambar (https://example.com/)"
                             className="mb-3"
                         >
-                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' />
+                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' readOnly disabled/>
                         </FloatingLabel>
 
                         <FloatingLabel

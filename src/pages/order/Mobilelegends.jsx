@@ -4,23 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
-// import Recaptcha from 'react-recaptcha';
 
 export default function MobileLegends() {
-
-
-    // // ** ReCAPTCHA
-    // const key = "6LcdtbMkAAAAAIjXZe3mlkAToEd319eq2ozekzOS";
-    // const [isCaptchaVerified, setCaptchaVerified] = useState(false);
-    // // specifying your onload callback function
-    // const callback = function () {
-    //     console.log('Done!!!!');
-    // };
-    // // specifying verify callback function
-    // const verifyCallback = function (response) {
-    //     console.log(response);
-    //     setCaptchaVerified(true);
-    // };
 
     // ** Modal Petunjuk
     const [show, setShow] = useState(false);
@@ -28,9 +13,10 @@ export default function MobileLegends() {
     const handleShow = () => setShow(true);
 
     // ** Loading Screen
-    const [isLoading, setisLoading] = useState(false);
+    const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
 
+    // ** Input Value ID & Zone
     const [inputValue, setInputValue] = useState('');
     const [user_id, setUser_id] = useState('');
     const [zone_id, setZone_id] = useState('');
@@ -60,6 +46,8 @@ export default function MobileLegends() {
             setErrorZone_id('Bagian ini dapat diisi maksimal 5 karakter');
         }
     };
+
+    // ** Generate Code RefId
     const generateRandomValue = () => {
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let result = "";
@@ -75,7 +63,6 @@ export default function MobileLegends() {
     const id = '-NOQFV4o7ZV2Xzae7eSr';
 
     useEffect(() => {
-        // setisLoading(true);
         onValue(ref(db, `/categories/${id}`), (snapshot) => {
             const data = snapshot.val();
             if (data !== null) {
@@ -91,7 +78,6 @@ export default function MobileLegends() {
     const [dataProduct, setDataProduct] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/product-ml`), (snapshot) => {
             setDataProduct([]);
             const data = snapshot.val();
@@ -110,7 +96,6 @@ export default function MobileLegends() {
     const [dataPaymentQris, setDataPaymentQris] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/payment-qris`), (snapshot) => {
             setDataPaymentQris([]);
             const data = snapshot.val();
@@ -129,7 +114,6 @@ export default function MobileLegends() {
     const [dataPaymentBank, setDataPaymentBank] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/payment-bank`), (snapshot) => {
             setDataPaymentBank([]);
             const data = snapshot.val();
@@ -148,7 +132,6 @@ export default function MobileLegends() {
     const [dataPaymentWallet, setDataPaymentWallet] = useState([]);
 
     useEffect(() => {
-        setisLoading(true);
         onValue(ref(db, `/payment-wallet`), (snapshot) => {
             setDataPaymentWallet([]);
             const data = snapshot.val();

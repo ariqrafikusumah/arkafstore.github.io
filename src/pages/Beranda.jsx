@@ -8,11 +8,10 @@ function Beranda() {
 
   // ** Read
   const [dataView, setDataView] = useState([]);
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
   const [isError, setisError] = useState(false);
 
   useEffect(() => {
-    setisLoading(true);
     onValue(ref(db, `/categories`), (snapshot) => {
       setDataView([]);
       const data = snapshot.val();
@@ -21,6 +20,8 @@ function Beranda() {
           setDataView((oldArray) => [...oldArray, item]);
         });
         setisLoading(false);
+      }else{
+        setisError(true);
       }
     });
   }, []);
@@ -30,7 +31,7 @@ function Beranda() {
   const handleClose = () => {
     setIsOpen(false);
     localStorage.setItem('popupDisplayed', 'true');
-    console.log(localStorage);
+    console.log('Close PopUp');
   };
   useEffect(() => {
     const popupDisplayed = localStorage.getItem('popupDisplayed');
@@ -52,41 +53,43 @@ function Beranda() {
         <span className="sr-only">Loading...</span>
       </div>
     </div>
-  );
-  return (
-    <>
-      <PopUp isOpen={isOpen} onClose={handleClose} />
-      <div className='xl:px-52 lg:px-32 md:px-5 xs:px-5 '>
-        <div>
-          <Carousel />
-        </div>
-        <div>
-          <div className='mt-5 mb-5'>
-            <span className='text-2xl font-bold '>GAME TOP UP</span>
+  ); else if (dataView && !isError )
+    return (
+      <>
+        <PopUp isOpen={isOpen} onClose={handleClose} />
+        <div className='xl:px-52 lg:px-32 md:px-5 xs:px-5 '>
+          <div className='mt-3'>
+            <Carousel />
           </div>
-        </div>
-        <div className='grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2 xss:grid-cols-2 gap-4'>
-          {dataView.map((item, index) => (
-            <div key={item.uuid}>
-              <div className='rounded-lg'>
-                <div>
+          <div>
+            <div className='mt-5 mb-5'>
+              <span className='text-2xl font-bold '>GAME TOP UP</span>
+            </div>
+          </div>
+          <div className='grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2 xss:grid-cols-2 gap-4'>
+            {dataView.map((item, index) => (
+              <div key={item.uuid}>
+                <div className='rounded-lg'>
                   <div>
-                    <img className='rounded-xl h-32 w-32 mx-auto' src={item.thumbnail} alt={item.category} />
-                  </div>
-                  <div className='text-center font-bold'>{item.category}</div>
-                  <div className='text-center'>
-                    <a href={item.link}>
-                      <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"> Top Up </button>
-                    </a>
+                    <div>
+                      <img className='rounded-xl h-32 w-32 mx-auto' src={item.thumbnail} alt={item.category} />
+                    </div>
+                    <div className='text-center font-bold'>{item.category}</div>
+                    <div className='text-center'>
+                      <a href={item.link}>
+                        <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"> Top Up </button>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </>
-  )
+      </>
+    );
+  else {
+    return <h1 className='text-center'>Something Went Wrong</h1>;
+  }
 }
-
-export default Beranda
+  export default Beranda

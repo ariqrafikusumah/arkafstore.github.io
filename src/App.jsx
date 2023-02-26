@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Beranda from "./pages/Beranda";
@@ -16,6 +15,9 @@ import TermsAndCondition from "./pages/TermAndCondition";
 import Tentang from "./pages/Tentang";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Qris from "./admin/Qris";
+import 'react-bootstrap';
+import Bank from "./admin/Bank";
+import Ewallet from "./admin/Ewallet";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/qris" element={<Qris />} />
+        <Route path="/admin/bank" element={<Bank />} />
+        <Route path="/admin/e-wallet" element={<Ewallet />} />
         <Route path="/order/free-fire" element={<Freefire />} />
         <Route path="/admin/free-fire" element={<FreeFire/>} />
         <Route path="/admin/dashboard-admin" element={<Dashboard />} />
