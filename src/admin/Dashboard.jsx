@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { BuildingLibraryIcon, QrCodeIcon, TagIcon, WalletIcon } from '@heroicons/react/24/solid';
 
 function Dashboard() {
@@ -55,19 +55,51 @@ function Dashboard() {
               </div>
             </div>
           </a>
-          <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
-            <div className='flex gap-2'>
-              <div className='py-3'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-9">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-xl font-bold mb-2">Pubg Mobile</h2>
-                <p className="text-gray-700 text-lg font-bold">Edit</p>
+          <a href="/admin/pubg-mobile" className=' no-underline'>
+            <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-9">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Pubg Mobile</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit</p>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
+          <a href="/admin/higgs-domino" className=' no-underline'>
+            <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-9">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Higgs Domino</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit</p>
+                </div>
+              </div>
+            </div>
+          </a>
+          <a href="/admin/genshin-impact" className=' no-underline'>
+            <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-9">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Genshin Impact</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit</p>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Payment</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

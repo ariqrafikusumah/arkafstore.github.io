@@ -18,6 +18,12 @@ import Qris from "./admin/Qris";
 import 'react-bootstrap';
 import Bank from "./admin/Bank";
 import Ewallet from "./admin/Ewallet";
+import Pubgmobile from "./pages/order/Pubgmobile";
+import PubgMobile from "./admin/Pubgmobile";
+import HiggsDomino from "./admin/Higgsdomino";
+import Higgsdomino from "./pages/order/Higgsdomino";
+import Genshinimpact from "./admin/Genshinimpact";
+import GenshinImpact from "./pages/order/Genshinimpact";
 
 function App() {
   return (
@@ -35,6 +41,12 @@ function App() {
         <Route path="/admin/e-wallet" element={<Ewallet />} />
         <Route path="/order/free-fire" element={<Freefire />} />
         <Route path="/admin/free-fire" element={<FreeFire/>} />
+        <Route path="/order/pubg-mobile" element={<Pubgmobile/>} />
+        <Route path="/admin/pubg-mobile" element={<PubgMobile/>} />
+        <Route path="/admin/higgs-domino" element={<HiggsDomino/>} />
+        <Route path="/order/higgs-domino" element={<Higgsdomino/>} />
+        <Route path="/admin/genshin-impact" element={<Genshinimpact/>} />
+        <Route path="/order/genshin-impact" element={<GenshinImpact/>} />
         <Route path="/admin/dashboard-admin" element={<Dashboard />} />
         <Route path="/admin/category-game" element={<Category />} />
         <Route path="/admin/mobile-legend" element={<Mobilelegend />} />

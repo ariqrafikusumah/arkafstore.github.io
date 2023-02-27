@@ -39,24 +39,6 @@ function Carousel() {
                 <SwiperSlide>
                     <img className='rounded-xl' src={Banner3} alt="" />
                 </SwiperSlide>
-                {/* <SwiperSlide>
-                    <img className='rounded-xl' src={Banner} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img className='rounded-xl' src={Banner} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img className='rounded-xl' src={Banner} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img className='rounded-xl' src={Banner} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img className='rounded-xl' src={Banner} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img className='rounded-xl' src={Banner} alt="" />
-                </SwiperSlide> */}
             </Swiper>
         </>
     )

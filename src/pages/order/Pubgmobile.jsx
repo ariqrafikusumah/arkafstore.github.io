@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
 
-export default function Freefire() {
+export default function Pubgmobile() {
 
     // ** Modal Petunjuk
     const [show, setShow] = useState(false);
@@ -25,11 +25,11 @@ export default function Freefire() {
     const handleChangeUser_id = (event) => {
         const inputNumberUser_id = event.target.value.replace(/\D/g, '');
         // Remove non-numeric characters from the input
-        if (inputNumberUser_id.length <= 25) {
+        if (inputNumberUser_id.length <= 30) {
             setUser_id(inputNumberUser_id);
             setErrorUser_id('');
         } else {
-            setErrorUser_id('Bagian ini dapat diisi maksimal 25 karakter');
+            setErrorUser_id('Bagian ini dapat diisi maksimal 30 karakter');
         }
     };
 
@@ -46,7 +46,7 @@ export default function Freefire() {
 
     // ** Read Data APi category
     const [dataCategory, setDataCategory] = useState([]);
-    const id = '-NOQNACFEFS2UOJlYW-X';
+    const id = '-NOQNACFEFS2UOJlYW-Z';
 
     // ** Mengambil Data Category
     useEffect(() => {
@@ -65,7 +65,7 @@ export default function Freefire() {
     const [dataProduct, setDataProduct] = useState([]);
 
     useEffect(() => {
-        onValue(ref(db, `/product-ff`), (snapshot) => {
+        onValue(ref(db, `/product-pubg`), (snapshot) => {
             setDataProduct([]);
             const data = snapshot.val();
             if (data !== null) {
@@ -182,12 +182,12 @@ export default function Freefire() {
                                 ))}
                                 <div className='flex flex-cols-2 gap-2 mt-3'>
                                     <div>
-                                        <a href="https://apps.apple.com/US/app/id1300146617?mt=8" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://apps.apple.com/id/app/pubg-mobile/id1330123889?l=id" target="_blank" rel="noopener noreferrer">
                                             <img src="https://d1qgcmfii0ptfa.cloudfront.net/S/content/mobile/images/app_store_coda.png" alt="" />
                                         </a>
                                     </div>
                                     <div>
-                                        <a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://play.google.com/store/apps/details?id=com.tencent.ig" target="_blank" rel="noopener noreferrer">
                                             <img src="https://d1qgcmfii0ptfa.cloudfront.net/S/content/mobile/images/google_play_coda.png" alt="" />
                                         </a>
                                     </div>
@@ -360,12 +360,12 @@ export default function Freefire() {
                             ))}
                             <div className='flex flex-cols-2 gap-2 mt-3'>
                                 <div>
-                                    <a href="https://apps.apple.com/US/app/id1300146617?mt=8" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://apps.apple.com/id/app/pubg-mobile/id1330123889?l=id" target="_blank" rel="noopener noreferrer">
                                         <img src="https://d1qgcmfii0ptfa.cloudfront.net/S/content/mobile/images/app_store_coda.png" alt="" />
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://play.google.com/store/apps/details?id=com.tencent.ig" target="_blank" rel="noopener noreferrer">
                                         <img src="https://d1qgcmfii0ptfa.cloudfront.net/S/content/mobile/images/google_play_coda.png" alt="" />
                                     </a>
                                 </div>
@@ -518,7 +518,7 @@ export default function Freefire() {
                     </>
                 ))}
             </Modal>
-            </>
+        </>
         )
     }
 }
