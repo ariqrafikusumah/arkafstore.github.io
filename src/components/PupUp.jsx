@@ -67,7 +67,7 @@ function PopUp({ isOpen, onClose }) {
                                             Selamat Datang
                                         </Dialog.Title>
                                         <div className="mt-2">
-                                            <img className='shadow-xl rounded-xl' src="https://img.freepik.com/free-vector/character-playing-videogame_52683-36686.jpg?w=1060&t=st=1676813617~exp=1676814217~hmac=1d621515879da45d788c616bf8d674401346d398b18ad5651ce9d68c35e76068" alt="" />
+                                            <img className='shadow-xl rounded-xl' src="https://img.freepik.com/free-vector/character-playing-videogame_52683-36686.jpg?w=1060&t=st=1676813617~exp=1676814217~hmac=1d621515879da45d788c616bf8d674401346d398b18ad5651ce9d68c35e76068" alt="Pop Up" />
                                             {/* <p className="text-sm text-gray-500">
                                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                                 Suspendisse malesuada lacus ex, sit amet blandit leo

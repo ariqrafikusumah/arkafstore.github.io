@@ -24,6 +24,8 @@ import HiggsDomino from "./admin/Higgsdomino";
 import Higgsdomino from "./pages/order/Higgsdomino";
 import Genshinimpact from "./admin/Genshinimpact";
 import GenshinImpact from "./pages/order/Genshinimpact";
+import BannerSetting from "./admin/BannerSetting";
+import PopUp from "./admin/PopUp";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
         <Route path="/Tentang" element={<Login />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin/banner-setting" element={<BannerSetting />} />
+        <Route path="/admin/pop-up" element={<PopUp />} />
         <Route path="/admin/qris" element={<Qris />} />
         <Route path="/admin/bank" element={<Bank />} />
         <Route path="/admin/e-wallet" element={<Ewallet />} />

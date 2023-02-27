@@ -1,5 +1,5 @@
 import React from 'react'
-import { BuildingLibraryIcon, QrCodeIcon, TagIcon, WalletIcon } from '@heroicons/react/24/solid';
+import { BuildingLibraryIcon, Cog6ToothIcon, QrCodeIcon, TagIcon, WalletIcon } from '@heroicons/react/24/solid';
 
 function Dashboard() {
   return (
@@ -153,6 +153,35 @@ function Dashboard() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold mb-2">Game</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <h1 className="text-3xl font-bold mb-10 mt-10">- Homepage</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <a href="/admin/banner-setting" className=' no-underline'>
+            <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <Cog6ToothIcon className='w-8 h-8' />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Banner</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit</p>
+                </div>
+              </div>
+            </div>
+          </a>
+          <a href="/admin/pop-up" className=' no-underline'>
+            <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <Cog6ToothIcon className='w-8 h-8' />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Pop Up</h2>
                   <p className="text-gray-700 text-lg font-bold">Edit</p>
                 </div>
               </div>
