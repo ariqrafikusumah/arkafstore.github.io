@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Banner from '../assets/img/banner-arkafstore.png'
-import Banner2 from '../assets/img/banner-arkafstore-2.png'
-import Banner3 from '../assets/img/banner-arkafstore-3.png'
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 

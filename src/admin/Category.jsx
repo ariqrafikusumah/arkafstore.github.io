@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { db } from '../database/firebase'
+import { db, auth } from '../database/firebase'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 import { FloatingLabel, Form, FormControl } from 'react-bootstrap';
 import { ref, onValue, update } from "firebase/database";
+import Login from '../auth/Login';
 
 
 function Category() {
@@ -70,6 +71,39 @@ function Category() {
         setTempUuid(item.uuid);
     };
 
+    //** Login Session User */
+    const [user, setUser] = useState(null);
+
+    // fungsi untuk logout
+    const handleLogout = () => {
+        auth.signOut()
+            .then(() => {
+                console.log('Logout berhasil');
+                // redirect ke halaman login
+            })
+            .catch((error) => {
+                console.log('Logout gagal: ', error);
+            });
+    }
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('Login berhasil!');
+                setUser(user);
+                // Redirect ke halaman setelah login berhasil
+            } else {
+                console.log('Belum login');
+                setUser(null);
+            }
+        });
+        return unsubscribe;
+    }, [])
+
+    //**  Render komponen Login jika user belum login
+    if (!user) {
+        return <Login />;
+    }
     if (isLoading)
         return (
             <div className="text-center mt-5">
@@ -85,109 +119,113 @@ function Category() {
     else if (dataTabel && !isError)
         return (
             <>
-                <div>
-                    <div className="container xl:px-52 lg:px-32 md:px-5 xs:px-5 mt-5">
-                        <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 mt-3" aria-label="Breadcrumb">
-                            <ol className="inline-flex items-center space-x-1 md:space-x-3">
-                                <li className="inline-flex items-center">
-                                    <a href="/admin/dashboard-admin" className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 ">
-                                        <svg aria-hidden="true" className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
-                                        Dashboard
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="flex items-center">
-                                        <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                        <a href="/admin/category-game" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Category</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="flex items-center">
-                                        <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                        <a href="/admin/category-game" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Game</a>
-                                    </div>
-                                </li>
-                            </ol>
-                        </nav>
-                        <div className='text-3xl font-bold mb-4 mt-10'>
-                            Category
-                        </div>
-                        {/* <div>
+                {user ? (
+                    <div>
+                        <div className="container xl:px-52 lg:px-32 md:px-5 xs:px-5 mt-5">
+                            <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 mt-3" aria-label="Breadcrumb">
+                                <ol className="inline-flex items-center space-x-1 md:space-x-3">
+                                    <li className="inline-flex items-center">
+                                        <a href="/admin/dashboard-admin" className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 ">
+                                            <svg aria-hidden="true" className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                                            Dashboard
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div className="flex items-center">
+                                            <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+                                            <a href="/admin/category-game" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Category</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className="flex items-center">
+                                            <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+                                            <a href="/admin/category-game" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Game</a>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </nav>
+                            <div className='text-3xl font-bold mb-4 mt-10'>
+                                Category
+                            </div>
+                            {/* <div>
                             <button className=" rounded-full"><PlusCircleIcon className="w-8 hover:text-indigo-500 " onClick={() => setModalShow(true)} /></button>
                             <TambahData
                                 show={modalShow}
                                 onHide={() => setModalShow(false)}
                             />
                         </div> */}
-                        <div>
-                            <div className="overflow-x-auto rounded-lg">
-                                <table className="table-auto border-collapse">
-                                    <thead className="bg-gray-50">
-                                        <tr className="bg-gray-200 text-gray-700">
-                                            <th className="py-2 px-4 border">No</th>
-                                            <th className="py-2 px-4 border">Nama Kategori</th>
-                                            <th className="py-2 px-4 border">Deskripsi</th>
-                                            <th className="py-2 px-4 border">Gambar Kategori</th>
-                                            <th className="py-2 px-4 border">Gambar Petunjuk</th>
-                                            <th className="py-2 px-4 border">URL</th>
-                                            <th className="py-2 px-4 border">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {dataTabel.map((item, index) => {
-                                            return (
-                                                <>
-                                                    <tr key={item}>
-                                                        <td className="px-6 py-4 whitespace-nowrap border">
-                                                            <div className="text-sm font-medium text-gray-900">{index + 1}</div>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap border">
-                                                            <div className="text-sm font-medium text-gray-900">{item.category}</div>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap border">
-                                                            <div className="text-sm text-gray-500">{item.description}</div>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap border">
-                                                            <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.thumbnail} alt={item.category} /></div>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap border">
-                                                            <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.petunjuk} alt={item.category} /></div>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap border">
-                                                            <div className="text-sm font-medium text-gray-900">https://example.nelify.app{item.link}</div>
-                                                        </td>
-                                                        <td className="flex px-6 py-4 whitespace-nowrap border">
-                                                            <div>
-                                                                <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleUpdate(item)} >
-                                                                    Edit
-                                                                </button>
-                                                                <EditData
-                                                                    show={modalShow2}
-                                                                    onHide={() => setModalShow2(false)}
-                                                                    category={category}
-                                                                    description={description}
-                                                                    link={link}
-                                                                    petunjuk={petunjuk}
-                                                                    thumbnail={thumbnail}
-                                                                    uuid={tempUuid}
-                                                                />
-                                                            </div>
-                                                            {/* <div>
+                            <div>
+                                <div className="overflow-x-auto rounded-lg">
+                                    <table className="table-auto border-collapse">
+                                        <thead className="bg-gray-50">
+                                            <tr className="bg-gray-200 text-gray-700">
+                                                <th className="py-2 px-4 border">No</th>
+                                                <th className="py-2 px-4 border">Nama Kategori</th>
+                                                <th className="py-2 px-4 border">Deskripsi</th>
+                                                <th className="py-2 px-4 border">Gambar Kategori</th>
+                                                <th className="py-2 px-4 border">Gambar Petunjuk</th>
+                                                <th className="py-2 px-4 border">URL</th>
+                                                <th className="py-2 px-4 border">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="bg-white divide-y divide-gray-200">
+                                            {dataTabel.map((item, index) => {
+                                                return (
+                                                    <>
+                                                        <tr key={item}>
+                                                            <td className="px-6 py-4 whitespace-nowrap border">
+                                                                <div className="text-sm font-medium text-gray-900">{index + 1}</div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap border">
+                                                                <div className="text-sm font-medium text-gray-900">{item.category}</div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap border">
+                                                                <div className="text-sm text-gray-500">{item.description}</div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap border">
+                                                                <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.thumbnail} alt={item.category} /></div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap border">
+                                                                <div className="text-sm px-3 text-gray-500"><img className="w-8" src={item.petunjuk} alt={item.category} /></div>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap border">
+                                                                <div className="text-sm font-medium text-gray-900">https://example.nelify.app{item.link}</div>
+                                                            </td>
+                                                            <td className="flex px-6 py-4 whitespace-nowrap border">
+                                                                <div>
+                                                                    <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleUpdate(item)} >
+                                                                        Edit
+                                                                    </button>
+                                                                    <EditData
+                                                                        show={modalShow2}
+                                                                        onHide={() => setModalShow2(false)}
+                                                                        category={category}
+                                                                        description={description}
+                                                                        link={link}
+                                                                        petunjuk={petunjuk}
+                                                                        thumbnail={thumbnail}
+                                                                        uuid={tempUuid}
+                                                                    />
+                                                                </div>
+                                                                {/* <div>
                                                                 <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDelete(item)}>
                                                                     Delete
                                                                 </button>
                                                             </div> */}
-                                                        </td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                ) : (
+                    <Login />
+                )}
             </>
         )
     else {
@@ -356,7 +394,7 @@ function EditData(props) {
                             label="URL Category"
                             className="mb-3"
                         >
-                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' readOnly disabled/>
+                            <FormControl type="url" value={link} onChange={handleDataChange3} placeholder='URL gambar (https://example.com/)' readOnly disabled />
                         </FloatingLabel>
 
                         <FloatingLabel
@@ -366,7 +404,7 @@ function EditData(props) {
                         >
                             <FormControl type="url" value={petunjuk} onChange={handleDataChange4} placeholder='Petunjuk' />
                         </FloatingLabel>
-                        
+
                         <FloatingLabel
                             controlId="floatingThumbnail"
                             label="Thumbnail (https://example.com/)"
@@ -384,6 +422,7 @@ function EditData(props) {
         </>
     )
 }
+
 export default Category
 
 

@@ -9,7 +9,7 @@ import FreeFire from "./admin/Freefire";
 import Mobilelegend from "./admin/Mobilelegend";
 import Mobilelegends from "./pages/order/Mobilelegends";
 import Category from "./admin/Category";
-import Login from "./admin/Login";
+import Login from "./auth/Login";
 import Freefire from "./pages/order/Freefire";
 import TermsAndCondition from "./pages/TermAndCondition";
 import Tentang from "./pages/Tentang";
@@ -26,6 +26,8 @@ import Genshinimpact from "./admin/Genshinimpact";
 import GenshinImpact from "./pages/order/Genshinimpact";
 import BannerSetting from "./admin/BannerSetting";
 import PopUp from "./admin/PopUp";
+import Daftalayanan from "./pages/Daftalayanan";
+import WhatsappSetting from "./admin/WhatsappSetting";
 
 function App() {
   return (
@@ -35,9 +37,11 @@ function App() {
         <Route path="/" element={<Beranda />} />
         <Route path="/Terms" element={<TermsAndCondition />} />
         <Route path="/Tentang" element={<Tentang />} />
+        <Route path="/daftar-layanan" element={<Daftalayanan />} />
+        <Route path="/admin/whatsapp-setting" element={<WhatsappSetting />} />
         <Route path="/Tentang" element={<Login />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-        <Route path="/admin/login" element={<Login />} />
+        <Route path="/auth/login" element={<Login />} />
         <Route path="/admin/banner-setting" element={<BannerSetting />} />
         <Route path="/admin/pop-up" element={<PopUp />} />
         <Route path="/admin/qris" element={<Qris />} />

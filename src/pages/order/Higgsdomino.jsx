@@ -61,6 +61,21 @@ export default function Higgsdomino() {
         })
     }, [id]);
 
+    // ** Read Phone-Whatsapp
+    const [phone, setPhone] = useState('');
+    useEffect(() => {
+        onValue(ref(db, '/phone-whatsapp'), (snapshot) => {
+            const data = snapshot.val();
+            if (data !== null) {
+                const phoneArr = Object.values(data).map((item) => item.phone);
+                setPhone(phoneArr);
+                setisLoading(false);
+            } else {
+                setisError(true);
+            }
+        })
+    }, []);
+
     // ** Read Data APi product
     const [dataProduct, setDataProduct] = useState([]);
 
@@ -135,7 +150,7 @@ export default function Higgsdomino() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(handleSubmit);
-        const phone_whatsapp = '6281281444295';
+        const phone_whatsapp = phone;
         const user_id = event.target.user_id.value;
         const category = event.target.category.value;
         const productsId = document.querySelector('input[name="product"]:checked');

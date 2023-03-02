@@ -59,6 +59,21 @@ export default function Genshinimpact() {
         return result;
     };
 
+        // ** Read Phone-Whatsapp
+        const [phone, setPhone] = useState('');
+        useEffect(() => {
+            onValue(ref(db, '/phone-whatsapp'), (snapshot) => {
+                const data = snapshot.val();
+                if (data !== null) {
+                    const phoneArr = Object.values(data).map((item) => item.phone);
+                    setPhone(phoneArr);
+                    setisLoading(false);
+                } else {
+                    setisError(true);
+                }
+            })
+        }, []);
+
     // ** Read Data APi category
     const [dataCategory, setDataCategory] = useState([]);
     const id = '-NOQNACFEFS2UOJlWW-Z';
@@ -150,7 +165,7 @@ export default function Genshinimpact() {
         event.preventDefault();
         console.log(handleSubmit);
 
-        const phone_whatsapp = '6281281444295';
+        const phone_whatsapp = phone;
         const user_id = event.target.user_id.value;
         const zone_id = event.target.zone_id.value;
         const category = event.target.category.value;
