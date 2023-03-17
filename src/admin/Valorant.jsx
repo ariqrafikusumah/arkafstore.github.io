@@ -11,7 +11,7 @@ import { set, ref, onValue, remove, update } from "firebase/database";
 import Login from '../auth/Login';
 
 
-function Higgsdomino() {
+function ValorantAdmin() {
     const [dataTabel, setDataTabel] = useState("");
     const [modalShow, setModalShow] = React.useState(false);
     const [modalShow2, setModalShow2] = React.useState(false);
@@ -25,7 +25,7 @@ function Higgsdomino() {
 
     // ** Read
     useEffect(() => {
-        onValue(ref(db, `/product-hdm`), (snapshot) => {
+        onValue(ref(db, `/product-valo`), (snapshot) => {
             let timerInterval
             Swal.fire({
                 title: 'Memuat data !',
@@ -64,7 +64,7 @@ function Higgsdomino() {
 
     // ** Delete
     const handleDelete = (item) => {
-        remove(ref(db, `/product-hdm/${item.uuid}`));
+        remove(ref(db, `/product-valo/${item.uuid}`));
     };
 
     //** Update
@@ -181,19 +181,19 @@ function Higgsdomino() {
                                     <li>
                                         <div className="flex items-center">
                                             <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                            <a href="/admin/higgs-domino" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Product Games</a>
+                                            <a href="/admin/valorant" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Product Games</a>
                                         </div>
                                     </li>
                                     <li>
                                         <div className="flex items-center">
                                             <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                            <a href="/admin/higgs-domino" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Higgs Domino</a>
+                                            <a href="/admin/valorant" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Valorant</a>
                                         </div>
                                     </li>
                                 </ol>
                             </nav>
                             <div className='text-3xl font-bold mb-4 mt-10'>
-                                Product Higgs Domino
+                                Product Valorant
                             </div>
                             <div>
                                 <button className=" rounded-full"><PlusCircleIcon className="w-8 hover:text-indigo-500 " onClick={() => setModalShow(true)} /></button>
@@ -203,7 +203,7 @@ function Higgsdomino() {
                                 />
                             </div>
                             <div>
-                                <div className="overflow-x-auto max-h-100 overflow-y-auto rounded-lg">
+                                <div className="overflow-x-auto h-full max-h-[500px] overflow-y-scroll rounded-lg">
                                     <table className="table-auto border-collapse">
                                         <thead className="bg-gray-50">
                                             <tr className="bg-gray-200 text-gray-700">
@@ -287,19 +287,19 @@ function Higgsdomino() {
                                 <li>
                                     <div className="flex items-center">
                                         <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                        <a href="/admin/higgs-domino" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Product Games</a>
+                                        <a href="/admin/valorant" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Product Games</a>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="flex items-center">
                                         <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                        <a href="/admin/higgs-dominos" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Higgs Domino</a>
+                                        <a href="/admin/valorants" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 ">Valorant</a>
                                     </div>
                                 </li>
                             </ol>
                         </nav>
                         <div className='text-3xl font-bold mb-4 mt-10'>
-                            Product Higgs Domino
+                            Product Valorant
                         </div>
                         <div>
                             <button className=" rounded-full"><PlusCircleIcon className="w-8 hover:text-indigo-500 " onClick={() => setModalShow(true)} /></button>
@@ -308,7 +308,7 @@ function Higgsdomino() {
                                 onHide={() => setModalShow(false)}
                             />
                         </div>
-                        <div className="overflow-x-auto h-full max-h-[500px] overflow-y-scroll rounded-lg">
+                        <div className="overflow-x-auto rounded-lg">
                             <table className="table-auto border-collapse">
                                 <thead className="bg-gray-50">
                                     <tr className="bg-gray-200 text-gray-700">
@@ -354,7 +354,7 @@ function TambahData(props) {
     // ** Write
     const handleOnSubmit = () => {
         const uuid = uid();
-        set(ref(db, `/product-hdm/${uuid}`), {
+        set(ref(db, `/product-valo/${uuid}`), {
             product_name,
             price,
             picture,
@@ -471,7 +471,7 @@ function EditData(props) {
         console.log("tempUuid :", product_name, price, picture, code, tempUuid);
         e.preventDefault();
         if (tempUuid) {
-            update(ref(db, `/product-hdm/${tempUuid}`), {
+            update(ref(db, `/product-valo/${tempUuid}`), {
                 product_name,
                 price,
                 picture,
@@ -544,7 +544,7 @@ function EditData(props) {
         </>
     )
 }
-export default Higgsdomino
+export default ValorantAdmin
 
 
 

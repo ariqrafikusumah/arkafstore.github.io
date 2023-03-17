@@ -28,6 +28,8 @@ import BannerSetting from "./admin/BannerSetting";
 import PopUp from "./admin/PopUp";
 import Daftalayanan from "./pages/Daftalayanan";
 import WhatsappSetting from "./admin/WhatsappSetting";
+import Valorant from "./pages/order/Valorant";
+import ValorantAdmin from "./admin/Valorant";
 
 function App() {
   return (
@@ -39,7 +41,6 @@ function App() {
         <Route path="/Tentang" element={<Tentang />} />
         <Route path="/daftar-layanan" element={<Daftalayanan />} />
         <Route path="/admin/whatsapp-setting" element={<WhatsappSetting />} />
-        <Route path="/Tentang" element={<Login />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/admin/banner-setting" element={<BannerSetting />} />
@@ -59,6 +60,8 @@ function App() {
         <Route path="/admin/category-game" element={<Category />} />
         <Route path="/admin/mobile-legend" element={<Mobilelegend />} />
         <Route path="/order/mobile-legends" element={<Mobilelegends />} />
+        <Route path="/order/valorant" element={<Valorant />} />
+        <Route path="/admin/valorant" element={<ValorantAdmin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <FooterBot />
