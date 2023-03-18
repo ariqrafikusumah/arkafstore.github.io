@@ -4,8 +4,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
-import { Spinner } from 'react-bootstrap';
+import { FormControl, Spinner } from 'react-bootstrap';
 import Payment from '../../components/Payment';
+import axios from 'axios';
 
 export default function Higgsdomino() {
 
@@ -18,10 +19,51 @@ export default function Higgsdomino() {
     const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
 
-    // ** Input Value ID
+    // ** Input Value ID & Zone
     const [inputValue, setInputValue] = useState('');
     const [user_id, setUser_id] = useState('');
+    const [username, setUsername] = useState('');
     const [errorUser_id, setErrorUser_id] = useState('');
+    const [errorUsername, setErrorUsername] = useState('');
+
+    // ** Read Data APi Apigames
+    const [dataApigames, setDataApigames] = useState([]);
+
+    useEffect(() => {
+        onValue(ref(db, `/apigames`), (snapshot) => {
+            setDataApigames([]);
+            const data = snapshot.val();
+            if (data !== null) {
+                setDataApigames((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.uuid.localeCompare(b.uuid));
+                    return [...oldArray, ...newArray];
+                });
+                setisLoading(false);
+            } else {
+                setisError(true);
+            }
+        })
+    }, []);
+
+    useEffect(() => {
+        if (user_id) {
+            // ** Cek Id Game
+            dataApigames.map((item) => {
+                const merchant_id = item.merchant_id;
+                const game_code = 'higgs';
+                const signature = item.signature;
+                return axios.get(`https://v1.apigames.id/merchant/${merchant_id}/cek-username/${game_code}?user_id=${user_id}&signature=${signature}`)
+                    .then(response => {
+                        console.log(response.data);
+                        setUsername(response.data.data.username);
+                    })
+                    .catch(error => {
+                        console.log(error.response.data.message);
+                        setErrorUsername(error.response.data.error_msg);
+                    });
+            });
+        }
+    }, [user_id, dataApigames]);
 
     // ** Max Input Number 12 Digit
     const handleChangeUser_id = (event) => {
@@ -78,6 +120,8 @@ export default function Higgsdomino() {
         })
     }, []);
 
+
+
     // ** Read Data APi product
     const [dataProduct, setDataProduct] = useState([]);
 
@@ -102,6 +146,7 @@ export default function Higgsdomino() {
         console.log(handleSubmit);
         const phone_whatsapp = phone;
         const user_id = event.target.user_id.value;
+        const inputUsername = event.target.username.value;
         const category = event.target.category.value;
         const productsId = document.querySelector('input[name="product"]:checked');
         const productsValue = document.querySelector('input[name="product"]:checked').value;
@@ -114,7 +159,7 @@ export default function Higgsdomino() {
         const nama = event.target.nama.value;
         const randomValue = generateRandomValue();
         setInputValue(randomValue);
-        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
+        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Username%20ID*%20%3A%20${encodeURIComponent(inputUsername)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
         window.open(url);
     };
 
@@ -174,6 +219,9 @@ export default function Higgsdomino() {
                                                 <input type="number" id="user_id" name='user_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " maxLength="10" value={user_id} onChange={handleChangeUser_id} required />
                                                 <label htmlFor="user_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Masukkan User ID</label>
                                                 {errorUser_id && <div className="errorUser_id text-sm text-red-500 sm:mb-3">{errorUser_id}</div>}
+                                            </div>
+                                            <div className='relative'>
+                                                <FormControl type="text" id='username' name='username' value={username || (errorUsername && "User Tidak Ditemukan") || "Loading Username ..."} onChange={event => setUsername(event.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>
@@ -306,6 +354,9 @@ export default function Higgsdomino() {
                                                 <input type="number" id="user_id" name='user_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " maxLength="10" value={user_id} onChange={handleChangeUser_id} required />
                                                 <label htmlFor="user_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Masukkan User ID</label>
                                                 {errorUser_id && <div className="errorUser_id text-sm text-red-500 sm:mb-3">{errorUser_id}</div>}
+                                            </div>
+                                            <div className='relative'>
+                                                <FormControl type="text" id='username' name='username' value={username || (errorUsername && "User Tidak Ditemukan") || "Loading Username ..."} onChange={event => setUsername(event.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>

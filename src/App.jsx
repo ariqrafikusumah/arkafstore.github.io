@@ -30,6 +30,7 @@ import Daftalayanan from "./pages/Daftalayanan";
 import WhatsappSetting from "./admin/WhatsappSetting";
 import Valorant from "./pages/order/Valorant";
 import ValorantAdmin from "./admin/Valorant";
+import ApiGames from "./admin/Apigames";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
         <Route path="/order/mobile-legends" element={<Mobilelegends />} />
         <Route path="/order/valorant" element={<Valorant />} />
         <Route path="/admin/valorant" element={<ValorantAdmin />} />
+        <Route path="/admin/api" element={<ApiGames />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <FooterBot />

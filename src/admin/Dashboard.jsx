@@ -297,6 +297,19 @@ function Dashboard() {
               </div>
             </div>
           </a>
+          <a href="/admin/api" className=' no-underline'>
+            <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
+              <div className='flex gap-2'>
+                <div className='py-3'>
+                  <Cog6ToothIcon className='w-8 h-8' />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold mb-2">APi Setting</h2>
+                  <p className="text-gray-700 text-lg font-bold">Edit</p>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </>
