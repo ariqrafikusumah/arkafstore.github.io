@@ -41,7 +41,7 @@ export default function MobileLegends() {
                 })
                 .catch(error => {
                     console.log(error);
-                    setUsername("Username Tidak Ditemukan");
+                    setUsername(null);
                 });
         }
     }, [user_id, zone_id]);
@@ -219,7 +219,11 @@ export default function MobileLegends() {
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                             <div className='relative'>
-                                                <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
+                                                {username ? (
+                                                    <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
+                                                ) : (
+                                                    <FormControl type="text" id='username' name='username' value="User Tidak Ditemukan" onChange={e => setUsername(e.target.value)} disabled />
+                                                )}
                                             </div>
                                         </div>
                                         <div>
@@ -361,7 +365,11 @@ export default function MobileLegends() {
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                             <div className='relative'>
-                                                <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
+                                                {username ? (
+                                                    <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
+                                                ) : (
+                                                    <FormControl type="text" id='username' name='username' value="User Tidak Ditemukan" onChange={e => setUsername(e.target.value)} disabled />
+                                                )}
                                             </div>
                                         </div>
                                         <div>
