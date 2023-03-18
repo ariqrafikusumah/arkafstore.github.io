@@ -52,8 +52,9 @@ function Mobilelegend() {
             setDataTabel([]);
             const data = snapshot.val();
             if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataTabel((oldArray) => [...oldArray, item].sort((a, b) => a.code.localeCompare(b.code)));
+                setDataTabel((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.code.localeCompare(b.code));
+                    return [...oldArray, ...newArray];
                 });
             } else {
                 setisError(true);
@@ -161,6 +162,8 @@ function Mobilelegend() {
     if (isLoading)
         return (
             <div className="text-center mt-5">
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
                 <Spinner animation="grow" variant="" className='bg-indigo-500' />
             </div>
         );

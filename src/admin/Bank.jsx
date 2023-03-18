@@ -8,7 +8,6 @@ import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 import { FloatingLabel, Form, FormControl, Spinner } from 'react-bootstrap';
 import { set, ref, onValue, remove, update } from "firebase/database";
-import Login from '../auth/Login';
 
 function Bank() {
     const [dataTabel, setDataTabel] = useState('');
@@ -52,8 +51,9 @@ function Bank() {
             setDataTabel([]);
             const data = snapshot.val();
             if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataTabel((oldArray) => [...oldArray, item].sort((a, b) => a.price - b.price));
+                setDataTabel((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.bank_name.localeCompare(b.bank_name));
+                    return [...oldArray, ...newArray];
                 });
             } else {
                 setisError(true);
@@ -160,6 +160,8 @@ function Bank() {
     if (isLoading)
         return (
             <div className="text-center mt-5">
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
                 <Spinner animation="grow" variant="" className='bg-indigo-500' />
             </div>
         );

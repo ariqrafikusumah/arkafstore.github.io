@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { BuildingLibraryIcon, QrCodeIcon, ShoppingCartIcon, WalletIcon } from '@heroicons/react/24/solid';
-import Accordion from 'react-bootstrap/Accordion';
-import AccordionBody from 'react-bootstrap/esm/AccordionBody';
-import AccordionHeader from 'react-bootstrap/esm/AccordionHeader';
-import AccordionItem from 'react-bootstrap/esm/AccordionItem';
+import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
-import { Spinner } from 'react-bootstrap';
+import { FormControl, Spinner } from 'react-bootstrap';
+import Payment from '../../components/Payment';
+import axios from 'axios';
 
 export default function MobileLegends() {
 
@@ -25,8 +23,28 @@ export default function MobileLegends() {
     const [inputValue, setInputValue] = useState('');
     const [user_id, setUser_id] = useState('');
     const [zone_id, setZone_id] = useState('');
+    const [username, setUsername] = useState('');
     const [errorUser_id, setErrorUser_id] = useState('');
     const [errorZone_id, setErrorZone_id] = useState('');
+
+    // ** Cek Id Game
+    const merchant_id = 'M220514GMHJ5283KD';
+    const game_code = 'mobilelegend';
+    const signature = 'a82629af1aa64f73ba794f7c5498593c';
+
+    useEffect(() => {
+        if (user_id && zone_id) {
+            axios.get(`https://v1.apigames.id/merchant/${merchant_id}/cek-username/${game_code}?user_id=${user_id}${zone_id}&signature=${signature}`)
+                .then(response => {
+                    console.log(response.data);
+                    setUsername(response.data.data.username);
+                })
+                .catch(error => {
+                    console.log(error);
+                    setUsername("Username Tidak Ditemukan");
+                });
+        }
+    }, [user_id, zone_id]);
 
     // ** Max Input Number 10 Digit
     const handleChangeUser_id = (event) => {
@@ -69,7 +87,7 @@ export default function MobileLegends() {
         onValue(ref(db, '/phone-whatsapp'), (snapshot) => {
             const data = snapshot.val();
             if (data !== null) {
-                const phoneArr = Object.values(data).map((item) => item.phone);
+                const phoneArr = Object.values(data).map((item, index) => item.phone);
                 setPhone(phoneArr);
                 setisLoading(false);
             } else {
@@ -102,63 +120,11 @@ export default function MobileLegends() {
             setDataProduct([]);
             const data = snapshot.val();
             if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataProduct((oldArray) => [...oldArray, item].sort((a, b) => a.code.localeCompare(b.code)));
+                setDataProduct((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.code.localeCompare(b.code));
+                    return [...oldArray, ...newArray];
                 });
                 setisLoading(false);
-            } else {
-                setisError(true);
-            }
-        })
-    }, []);
-
-    // ** Read Data APi payment-qris
-    const [dataPaymentQris, setDataPaymentQris] = useState([]);
-
-    useEffect(() => {
-        onValue(ref(db, `/payment-qris`), (snapshot) => {
-            setDataPaymentQris([]);
-            const data = snapshot.val();
-            if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataPaymentQris((oldArray) => [...oldArray, item]);
-                });
-                setisLoading(false);
-            } else {
-                setisError(true);
-            }
-        })
-    }, []);
-
-    // ** Read Data APi payment-bank
-    const [dataPaymentBank, setDataPaymentBank] = useState([]);
-
-    useEffect(() => {
-        onValue(ref(db, `/payment-bank`), (snapshot) => {
-            setDataPaymentBank([]);
-            const data = snapshot.val();
-            if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataPaymentBank((oldArray) => [...oldArray, item]);
-                });
-                setisLoading(false);
-            } else {
-                setisError(true);
-            }
-        })
-    }, []);
-
-    // ** Read Data APi payment-wallet
-    const [dataPaymentWallet, setDataPaymentWallet] = useState([]);
-
-    useEffect(() => {
-        onValue(ref(db, `/payment-wallet`), (snapshot) => {
-            setDataPaymentWallet([]);
-            const data = snapshot.val();
-            if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataPaymentWallet((oldArray) => [...oldArray, item]);
-                });
             } else {
                 setisError(true);
             }
@@ -172,6 +138,7 @@ export default function MobileLegends() {
         const phone_whatsapp = phone;
         const user_id = event.target.user_id.value;
         const zone_id = event.target.zone_id.value;
+        const username = event.taget.value;
         const category = event.target.category.value;
         const productsId = document.querySelector('input[name="product"]:checked');
         const productsValue = document.querySelector('input[name="product"]:checked').value;
@@ -184,7 +151,7 @@ export default function MobileLegends() {
         const nama = event.target.nama.value;
         const randomValue = generateRandomValue();
         setInputValue(randomValue);
-        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
+        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Username%20ID*%20%3A%20${encodeURIComponent(username)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
         window.open(url);
 
     };
@@ -196,16 +163,16 @@ export default function MobileLegends() {
             <Spinner animation="grow" variant="" className='bg-indigo-500' />
         </div>
     );
-    else if (dataCategory, dataProduct, dataPaymentQris, dataPaymentBank, dataPaymentWallet && !isError)
+    else if (dataCategory && dataProduct && !isError)
         return (
             <>
                 <div>
                     <div className='grid xl:grid-cols-2 lg:grid-cols-2 xl:px-52 lg:px-32 md:px-5 sm:px-5 xs:px-2 mt-3'>
                         <div className=' rounded-xl xl:w-96 lg:w-96 lg:h-72'>
                             <div className='xl:px-auto xl:py-auto '>
-                                {dataCategory.map((item) => (
+                                {dataCategory.map((item, index) => (
                                     <>
-                                        <div key={item}>
+                                        <div key={index}>
                                             <img className='h-32 w-32 rounded-xl' src={item.thumbnail} alt={item.category} />
                                             <h1 className='text-lg font-bold'>{item.category}</h1>
                                             <div dangerouslySetInnerHTML={{ __html: item.description }} />
@@ -235,9 +202,9 @@ export default function MobileLegends() {
                                         </div>
                                         <div className='xl:grid xl:grid-cols-2 lg:grid-cols-1 lg:grid md:grid-cols-2 md:grid sm:grid sm:grid-cols-1 xs:grid xs:grid-cols-1 xss:grid xss:grid-cols-1 gap-x-8 gap-y-4 px-2 py-2 mb-2'>
                                             <div className="relative">
-                                                {dataCategory.map((item) => (
+                                                {dataCategory.map((item, index) => (
                                                     <>
-                                                        <div key={item}>
+                                                        <div key={index}>
                                                             <input type="text" name="category" id="category" value={item.category} hidden />
                                                         </div>
                                                     </>
@@ -250,6 +217,9 @@ export default function MobileLegends() {
                                                 <input type="number" id="zone_id" name='zone_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " maxLength="5" value={zone_id} onChange={handleChangeZone_id} required />
                                                 <label htmlFor="zone_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">( Zone ID )</label>
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
+                                            </div>
+                                            <div className='relative'>
+                                                <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>
@@ -271,9 +241,9 @@ export default function MobileLegends() {
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>2</span>&nbsp;Pilih Nominal Top Up
                                         </div>
                                         <div className='grid w-full gap-6 md:grid-cols-2 xs:grid-cols-2 mt-3'>
-                                            {dataProduct.map((item) => (
+                                            {dataProduct.map((item, index) => (
                                                 <>
-                                                    <div key={item}>
+                                                    <div key={index}>
                                                         <input type="radio" className='hidden peer' name='product' id={item.product_name} value={item.price} required />
                                                         <label htmlFor={item.product_name} className='inline-flex peer-checked:shadow-xl items-center justify-between w-full p-2 text-gray-500 bg-white border peer-checked:ring-indigo-500 peer-checked:ring-2 border-gray-200 rounded-lg cursor-pointer peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100'>
                                                             <div className='block'>
@@ -295,77 +265,7 @@ export default function MobileLegends() {
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>3</span>&nbsp;Pilih Pembayaran
                                         </div>
                                         <div className='mt-3 mb-3'>
-                                            <Accordion>
-                                                <AccordionItem className='mt-3' eventKey='0'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <QrCodeIcon className='w-5' />&nbsp;QRIS
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentQris.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.qris_name} name='payment' value={item.qris_img} required />
-                                                                    <label htmlFor={item.qris_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12 ' src={item.picture} alt={item.qr_qris} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.qris_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='2'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <BuildingLibraryIcon className='w-5' />&nbsp;Bank Transfer
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentBank.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.bank_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.bank_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.bank_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='3'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <WalletIcon className='w-5' />&nbsp;E-Wallet
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentWallet.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.wallet_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.wallet_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.wallet_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                            </Accordion>
+                                            <Payment />
                                         </div>
                                     </div>
                                 </div>
@@ -395,9 +295,9 @@ export default function MobileLegends() {
                 </div>
 
                 <Modal show={show} onHide={handleClose}>
-                    {dataCategory.map((item) => (
+                    {dataCategory.map((item, index) => (
                         <>
-                            <div key={item}>
+                            <div key={index}>
                                 <img className='h-full w-full rounded-lg' src={item.petunjuk} alt={item.category} />
                             </div>
                         </>
@@ -412,9 +312,9 @@ export default function MobileLegends() {
                     <div className='grid xl:grid-cols-2 lg:grid-cols-2 xl:px-52 lg:px-32 md:px-5 sm:px-5 xs:px-2 mt-3'>
                         <div className=' rounded-xl xl:w-96 lg:w-96 lg:h-72'>
                             <div className='xl:px-auto xl:py-auto '>
-                                {dataCategory.map((item) => (
+                                {dataCategory.map((item, index) => (
                                     <>
-                                        <div key={item}>
+                                        <div key={index}>
                                             <img className='h-32 w-32 rounded-xl' src={item.thumbnail} alt={item.category} />
                                             <h1 className='text-lg font-bold'>{item.category}</h1>
                                             <div dangerouslySetInnerHTML={{ __html: item.description }} />
@@ -444,9 +344,9 @@ export default function MobileLegends() {
                                         </div>
                                         <div className='xl:grid xl:grid-cols-2 lg:grid-cols-1 lg:grid md:grid-cols-2 md:grid sm:grid sm:grid-cols-1 xs:grid xs:grid-cols-1 xss:grid xss:grid-cols-1 gap-x-8 gap-y-4 px-2 py-2 mb-2'>
                                             <div className="relative">
-                                                {dataCategory.map((item) => (
+                                                {dataCategory.map((item, index) => (
                                                     <>
-                                                        <div key={item}>
+                                                        <div key={index}>
                                                             <input type="text" name="category" id="category" value={item.category} hidden />
                                                         </div>
                                                     </>
@@ -459,6 +359,9 @@ export default function MobileLegends() {
                                                 <input type="number" id="zone_id" name='zone_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " maxLength="5" value={zone_id} onChange={handleChangeZone_id} required />
                                                 <label htmlFor="zone_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">( Zone ID )</label>
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
+                                            </div>
+                                            <div className='relative'>
+                                                <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>
@@ -480,9 +383,9 @@ export default function MobileLegends() {
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>2</span>&nbsp;Pilih Nominal Top Up
                                         </div>
                                         <div className='grid w-full gap-6 md:grid-cols-2 xs:grid-cols-2 mt-3'>
-                                            {dataProduct.map((item) => (
+                                            {dataProduct.map((item, index) => (
                                                 <>
-                                                    <div key={item}>
+                                                    <div key={index}>
                                                         <input type="radio" className='hidden peer' name='product' id={item.product_name} value={item.price} required />
                                                         <label htmlFor={item.product_name} className='inline-flex peer-checked:shadow-xl items-center justify-between w-full p-2 text-gray-500 bg-white border peer-checked:ring-indigo-500 peer-checked:ring-2 border-gray-200 rounded-lg cursor-pointer peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100'>
                                                             <div className='block'>
@@ -504,77 +407,7 @@ export default function MobileLegends() {
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>3</span>&nbsp;Pilih Pembayaran
                                         </div>
                                         <div className='mt-3 mb-3'>
-                                            <Accordion>
-                                                <AccordionItem className='mt-3' eventKey='0'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <QrCodeIcon className='w-5' />&nbsp;QRIS
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentQris.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.qris_name} name='payment' value={item.qris_img} required />
-                                                                    <label htmlFor={item.qris_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12 ' src={item.picture} alt={item.qr_qris} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.qris_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='2'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <BuildingLibraryIcon className='w-5' />&nbsp;Bank Transfer
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentBank.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.bank_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.bank_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.bank_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='3'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <WalletIcon className='w-5' />&nbsp;E-Wallet
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentWallet.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.wallet_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.wallet_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.wallet_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                            </Accordion>
+                                            <Payment />
                                         </div>
                                     </div>
                                 </div>
@@ -604,9 +437,9 @@ export default function MobileLegends() {
                 </div>
 
                 <Modal show={show} onHide={handleClose}>
-                    {dataCategory.map((item) => (
+                    {dataCategory.map((item, index) => (
                         <>
-                            <div key={item}>
+                            <div key={index}>
                                 <img className='h-full w-full rounded-lg' src={item.petunjuk} alt={item.category} />
                             </div>
                         </>

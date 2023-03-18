@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { BuildingLibraryIcon, QrCodeIcon, ShoppingCartIcon, WalletIcon } from '@heroicons/react/24/solid';
-import Accordion from 'react-bootstrap/Accordion';
-import AccordionBody from 'react-bootstrap/esm/AccordionBody';
-import AccordionHeader from 'react-bootstrap/esm/AccordionHeader';
-import AccordionItem from 'react-bootstrap/esm/AccordionItem';
+import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
 import { Spinner } from 'react-bootstrap';
+import Payment from '../../components/Payment';
 
 export default function Genshinimpact() {
 
@@ -25,9 +22,7 @@ export default function Genshinimpact() {
     // ** Input Value ID & Zone
     const [inputValue, setInputValue] = useState('');
     const [user_id, setUser_id] = useState('');
-    const [zone_id, setZone_id] = useState('');
     const [errorUser_id, setErrorUser_id] = useState('');
-    const [errorZone_id, setErrorZone_id] = useState('');
 
     // ** Max Input Number 10 Digit
     const handleChangeUser_id = (event) => {
@@ -38,18 +33,6 @@ export default function Genshinimpact() {
             setErrorUser_id('');
         } else {
             setErrorUser_id('Bagian ini dapat diisi maksimal 10 karakter');
-        }
-    };
-
-    // ** Max Input Number 5 Digit
-    const handleChangeZone_id = (event) => {
-        const inputNumberZone_id = event.target.value.replace(/\D/g, '');
-        // Remove non-numeric characters from the input
-        if (inputNumberZone_id.length <= 5) {
-            setZone_id(inputNumberZone_id);
-            setErrorZone_id('');
-        } else {
-            setErrorZone_id('Bagian ini dapat diisi maksimal 5 karakter');
         }
     };
 
@@ -64,20 +47,20 @@ export default function Genshinimpact() {
         return result;
     };
 
-        // ** Read Phone-Whatsapp
-        const [phone, setPhone] = useState('');
-        useEffect(() => {
-            onValue(ref(db, '/phone-whatsapp'), (snapshot) => {
-                const data = snapshot.val();
-                if (data !== null) {
-                    const phoneArr = Object.values(data).map((item) => item.phone);
-                    setPhone(phoneArr);
-                    setisLoading(false);
-                } else {
-                    setisError(true);
-                }
-            })
-        }, []);
+    // ** Read Phone-Whatsapp
+    const [phone, setPhone] = useState('');
+    useEffect(() => {
+        onValue(ref(db, '/phone-whatsapp'), (snapshot) => {
+            const data = snapshot.val();
+            if (data !== null) {
+                const phoneArr = Object.values(data).map((item) => item.phone);
+                setPhone(phoneArr);
+                setisLoading(false);
+            } else {
+                setisError(true);
+            }
+        })
+    }, []);
 
     // ** Read Data APi category
     const [dataCategory, setDataCategory] = useState([]);
@@ -103,63 +86,11 @@ export default function Genshinimpact() {
             setDataProduct([]);
             const data = snapshot.val();
             if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataProduct((oldArray) => [...oldArray, item].sort((a, b) => a.code.localeCompare(b.code)));
+                setDataProduct((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.code.localeCompare(b.code));
+                    return [...oldArray, ...newArray];
                 });
                 setisLoading(false);
-            } else {
-                setisError(true);
-            }
-        })
-    }, []);
-
-    // ** Read Data APi payment-qris
-    const [dataPaymentQris, setDataPaymentQris] = useState([]);
-
-    useEffect(() => {
-        onValue(ref(db, `/payment-qris`), (snapshot) => {
-            setDataPaymentQris([]);
-            const data = snapshot.val();
-            if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataPaymentQris((oldArray) => [...oldArray, item]);
-                });
-                setisLoading(false);
-            } else {
-                setisError(true);
-            }
-        })
-    }, []);
-
-    // ** Read Data APi payment-bank
-    const [dataPaymentBank, setDataPaymentBank] = useState([]);
-
-    useEffect(() => {
-        onValue(ref(db, `/payment-bank`), (snapshot) => {
-            setDataPaymentBank([]);
-            const data = snapshot.val();
-            if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataPaymentBank((oldArray) => [...oldArray, item]);
-                });
-                setisLoading(false);
-            } else {
-                setisError(true);
-            }
-        })
-    }, []);
-
-    // ** Read Data APi payment-wallet
-    const [dataPaymentWallet, setDataPaymentWallet] = useState([]);
-
-    useEffect(() => {
-        onValue(ref(db, `/payment-wallet`), (snapshot) => {
-            setDataPaymentWallet([]);
-            const data = snapshot.val();
-            if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataPaymentWallet((oldArray) => [...oldArray, item]);
-                });
             } else {
                 setisError(true);
             }
@@ -197,7 +128,7 @@ export default function Genshinimpact() {
             <Spinner animation="grow" variant="" className='bg-indigo-500' />
         </div>
     );
-    else if (dataCategory, dataProduct, dataPaymentQris, dataPaymentBank, dataPaymentWallet && !isError)
+    else if (dataCategory && dataProduct && !isError)
         return (
             <>
                 <div>
@@ -248,16 +179,13 @@ export default function Genshinimpact() {
                                                 {errorUser_id && <div className="errorUser_id text-sm text-red-500 sm:mb-3">{errorUser_id}</div>}
                                             </div>
                                             <div className="relative">
-                                                <Form.Select aria-label="Default select example" id="zone_id" name='zone_id' onChange={handleChangeZone_id} required >
-                                                    <option>- Pilih Server -</option>
+                                                <Form.Select aria-label="Default select example" id="zone_id" name='zone_id' required >
+                                                    <option selected disabled>- Pilih Server -</option>
                                                     <option value="America">America</option>
                                                     <option value="Europe">Europe</option>
                                                     <option value="Asia">Asia</option>
                                                     <option value="TW, HK, MO">TW, HK, MO</option>
                                                 </Form.Select>
-                                                {/* <input type="number" id="zone_id" name='zone_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="(                 ) " maxLength="5" value={zone_id} onChange={handleChangeZone_id} required />
-                                                <label htmlFor="zone_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">&nbsp; &nbsp;Zone ID </label> */}
-                                                {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                         </div>
                                         <div>
@@ -303,77 +231,7 @@ export default function Genshinimpact() {
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>3</span>&nbsp;Pilih Pembayaran
                                         </div>
                                         <div className='mt-3 mb-3'>
-                                            <Accordion>
-                                                <AccordionItem className='mt-3' eventKey='0'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <QrCodeIcon className='w-5' />&nbsp;QRIS
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentQris.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.qris_name} name='payment' value={item.qris_img} required />
-                                                                    <label htmlFor={item.qris_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12 ' src={item.picture} alt={item.qr_qris} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.qris_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='2'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <BuildingLibraryIcon className='w-5' />&nbsp;Bank Transfer
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentBank.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.bank_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.bank_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.bank_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='3'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <WalletIcon className='w-5' />&nbsp;E-Wallet
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentWallet.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.wallet_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.wallet_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.wallet_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                            </Accordion>
+                                            <Payment />
                                         </div>
                                     </div>
                                 </div>
@@ -462,16 +320,13 @@ export default function Genshinimpact() {
                                                 {errorUser_id && <div className="errorUser_id text-sm text-red-500 sm:mb-3">{errorUser_id}</div>}
                                             </div>
                                             <div className="relative">
-                                                <Form.Select aria-label="Default select example" id="zone_id" name='zone_id' onChange={handleChangeZone_id} required >
-                                                    <option>- Pilih Server -</option>
+                                                <Form.Select aria-label="Default select example" id="zone_id" name='zone_id' required >
+                                                    <option selected disabled>- Pilih Server -</option>
                                                     <option value="America">America</option>
                                                     <option value="Europe">Europe</option>
                                                     <option value="Asia">Asia</option>
                                                     <option value="TW, HK, MO">TW, HK, MO</option>
                                                 </Form.Select>
-                                                {/* <input type="number" id="zone_id" name='zone_id' className="block border hover:ring-indigo-500 hover:border-indigo-500 px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="(                 ) " maxLength="5" value={zone_id} onChange={handleChangeZone_id} required />
-                                                <label htmlFor="zone_id" className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">&nbsp; &nbsp;Zone ID </label> */}
-                                                {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                         </div>
                                         <div>
@@ -517,77 +372,7 @@ export default function Genshinimpact() {
                                             <span className='border border-indigo-500 bg-indigo-500 px-2 text-white rounded-full'>3</span>&nbsp;Pilih Pembayaran
                                         </div>
                                         <div className='mt-3 mb-3'>
-                                            <Accordion>
-                                                <AccordionItem className='mt-3' eventKey='0'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <QrCodeIcon className='w-5' />&nbsp;QRIS
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentQris.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.qris_name} name='payment' value={item.qris_img} required />
-                                                                    <label htmlFor={item.qris_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12 ' src={item.picture} alt={item.qr_qris} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.qris_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='2'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <BuildingLibraryIcon className='w-5' />&nbsp;Bank Transfer
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentBank.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.bank_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.bank_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.bank_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                                <AccordionItem className='mt-3 border' eventKey='3'>
-                                                    <AccordionHeader className='text-gray-500 font-bold'>
-                                                        <WalletIcon className='w-5' />&nbsp;E-Wallet
-                                                    </AccordionHeader>
-                                                    <AccordionBody className='bg-gray-100'>
-                                                        <div className='grid grid-cols-2 gap-2'>
-                                                            {dataPaymentWallet.map((item) => (
-                                                                <div key={item}>
-                                                                    <input type="radio" className='hidden peer' id={item.wallet_name} name='payment' value={item.number_account} required />
-                                                                    <label htmlFor={item.wallet_name} className='inline-flex items-center justify-between w-full p-3 rounded-xl cursor-pointer border bg-white text-gray-500 peer-checked:ring-indigo-500 peer-checked:ring-2 peer-checked:text-indigo-500 peer-checked:bg-indigo-600'>
-                                                                        <div className='grid grid-rows-1'>
-                                                                            <div className='w-full text-sm font-semibold'>
-                                                                                <img className='w-12' src={item.picture} alt={item.wallet_name} />
-                                                                            </div>
-                                                                            <hr className='my-1' />
-                                                                            <div className='w-full text-sm font-semibold'>{item.first_name} {item.last_name}</div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                            </Accordion>
+                                            <Payment />
                                         </div>
                                     </div>
                                 </div>

@@ -17,8 +17,11 @@ function Beranda() {
       setDataView([]);
       const data = snapshot.val();
       if (data !== null) {
-        Object.values(data).map((item) => {
-          setDataView((oldArray) => [...oldArray, item]);
+        setDataView((oldArray) => {
+          const newArray = Object.values(data).map((item) => {
+            return { ...item };
+          });
+          return [...oldArray, ...newArray];
         });
         setisLoading(false);
       } else {

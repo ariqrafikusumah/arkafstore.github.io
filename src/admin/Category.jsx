@@ -6,7 +6,6 @@ import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 import { FloatingLabel, Form, FormControl, FormSelect, Spinner } from 'react-bootstrap';
 import { ref, onValue, update } from "firebase/database";
-import Login from '../auth/Login';
 
 
 function Category() {
@@ -51,8 +50,9 @@ function Category() {
             setDataTabel([]);
             const data = snapshot.val();
             if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataTabel((oldArray) => [...oldArray, item]);
+                setDataTabel((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.category.localeCompare(b.category));
+                    return [...oldArray, ...newArray];
                 });
             } else {
                 setisError(true);
@@ -150,6 +150,8 @@ function Category() {
     if (isLoading)
         return (
             <div className="text-center mt-5">
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
                 <Spinner animation="grow" variant="" className='bg-indigo-500' />
             </div>
         );

@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import { uid } from 'uid'
 import { auth, db } from '../database/firebase'
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
 import { FloatingLabel, Form, FormControl, Spinner } from 'react-bootstrap';
-import { set, ref, onValue, remove, update } from "firebase/database";
+import { ref, onValue, update } from "firebase/database";
 import Login from '../auth/Login';
 
 function PopUp() {
     const [dataTabel, setDataTabel] = useState('');
     const [modalShow, setModalShow] = React.useState(false);
-    const [modalShow2, setModalShow2] = React.useState(false);
     const [isLoading, setisLoading] = useState(true);
     const [isError, setisError] = useState(false);
     const [popup, setPopup] = useState('');
@@ -47,8 +44,9 @@ function PopUp() {
             setDataTabel([]);
             const data = snapshot.val();
             if (data !== null) {
-                Object.values(data).map((item) => {
-                    setDataTabel((oldArray) => [...oldArray, item]);
+                setDataTabel((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.code.localeCompare(b.code));
+                    return [...oldArray, ...newArray];
                 });
             } else {
                 setisError(true);
@@ -63,7 +61,7 @@ function PopUp() {
             'Update Button',
             'uuid :', item.uuid
         );
-        setModalShow2(true, item.uuid);
+        setModalShow(true, item.uuid);
         setPopup(item.popup);
         setTempUuid(item.uuid);
     };
@@ -145,6 +143,8 @@ function PopUp() {
         return (
             <div className="text-center mt-5">
                 <Spinner animation="grow" variant="" className='bg-indigo-500' />
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
+                <Spinner animation="grow" variant="" className='bg-indigo-500' />
             </div>
         );
     else if (dataTabel && !isError)
@@ -206,8 +206,8 @@ function PopUp() {
                                                                         Edit
                                                                     </button>
                                                                     <EditData
-                                                                        show={modalShow2}
-                                                                        onHide={() => setModalShow2(false)}
+                                                                        show={modalShow}
+                                                                        onHide={() => setModalShow(false)}
                                                                         popup={popup}
                                                                         uuid={tempUuid}
                                                                     />
