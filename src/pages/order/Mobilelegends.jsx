@@ -26,6 +26,7 @@ export default function MobileLegends() {
     const [username, setUsername] = useState('');
     const [errorUser_id, setErrorUser_id] = useState('');
     const [errorZone_id, setErrorZone_id] = useState('');
+    const [errorUsername, setErrorUsername] = useState('');
 
     // ** Cek Id Game
     const merchant_id = 'M220514GMHJ5283KD';
@@ -40,8 +41,8 @@ export default function MobileLegends() {
                     setUsername(response.data.data.username);
                 })
                 .catch(error => {
-                    console.log(error);
-                    setUsername(null);
+                    console.log(error.response.data.message);
+                    setErrorUsername(error.response.data.error_msg);
                 });
         }
     }, [user_id, zone_id]);
@@ -138,7 +139,7 @@ export default function MobileLegends() {
         const phone_whatsapp = phone;
         const user_id = event.target.user_id.value;
         const zone_id = event.target.zone_id.value;
-        const username = event.taget.value;
+        const inputUsername = event.target.username.value;
         const category = event.target.category.value;
         const productsId = document.querySelector('input[name="product"]:checked');
         const productsValue = document.querySelector('input[name="product"]:checked').value;
@@ -151,7 +152,7 @@ export default function MobileLegends() {
         const nama = event.target.nama.value;
         const randomValue = generateRandomValue();
         setInputValue(randomValue);
-        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Username%20ID*%20%3A%20${encodeURIComponent(username)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
+        const url = `https://wa.me/${phone_whatsapp}?text=*›%20Game*%20%3A%20${encodeURIComponent(category)}%0A*›%20Username%20ID*%20%3A%20${encodeURIComponent(inputUsername)}%0A*›%20Order%20ID*%20%3A%20${encodeURIComponent(user_id)}%20(%20${encodeURIComponent(zone_id)}%20)%0A*›%20Item*%20%3A%20${encodeURIComponent(products)}%0A*›%20Pembayaran%20via*%20%3A%20${encodeURIComponent(payment)}%20${encodeURIComponent(payment_number_account)}%0A*›%20Total*%20%3A%20Rp%20${encodeURIComponent(products_price)}%2C-%0A*›%20Nama Costumer*%20%3A%20${encodeURIComponent(nama)}%0A*›%20RefId*%20%3A%20%60%60%60S2302160${encodeURIComponent(randomValue)}%60%60%60%0A%0AKirim%20Bukti%20Pembayaran%20Disini%20ya%0AJika%20sudah%20ketik%20*PING*%0A%0A*_Best%20regards_*%0A*ARKAFSTORE*%0Ahttps%3A%2F%2Farkafstore.netlify.app`;
         window.open(url);
 
     };
@@ -219,11 +220,7 @@ export default function MobileLegends() {
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                             <div className='relative'>
-                                                {username ? (
-                                                    <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
-                                                ) : (
-                                                    <FormControl type="text" id='username' name='username' value="User Tidak Ditemukan" onChange={e => setUsername(e.target.value)} disabled />
-                                                )}
+                                                <FormControl type="text" id='username' name='username' value={username || (errorUsername && "User Tidak Ditemukan") || "Loading ..."} onChange={event => setUsername(event.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>
@@ -365,11 +362,7 @@ export default function MobileLegends() {
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                             <div className='relative'>
-                                                {username ? (
-                                                    <FormControl type="text" id='username' name='username' value={username} onChange={e => setUsername(e.target.value)} disabled />
-                                                ) : (
-                                                    <FormControl type="text" id='username' name='username' value="User Tidak Ditemukan" onChange={e => setUsername(e.target.value)} disabled />
-                                                )}
+                                                <FormControl type="text" id='username' name='username' value={username || (errorUsername && "User Tidak Ditemukan") || "Loading ..."} onChange={event => setUsername(event.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>
