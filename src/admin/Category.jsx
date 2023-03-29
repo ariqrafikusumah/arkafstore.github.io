@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { db, auth } from '../database/firebase'
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
-import { FloatingLabel, Form, FormControl, FormSelect, Spinner } from 'react-bootstrap';
+import { FloatingLabel, Form, FormControl, FormSelect, Spinner, Button, Modal } from 'react-bootstrap';
 import { ref, onValue, update } from "firebase/database";
 
 

@@ -3,13 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { uid } from 'uid'
 import { auth, db } from '../database/firebase'
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
-import { FloatingLabel, Form, FormControl, Spinner } from 'react-bootstrap';
+import { FloatingLabel, Form, FormControl, Spinner, Button, Modal } from 'react-bootstrap';
 import { set, ref, onValue, remove, update } from "firebase/database";
-import Login from '../auth/Login';
-
+import { Login } from '../auth';
 
 function ValorantAdmin() {
     const [dataTabel, setDataTabel] = useState("");

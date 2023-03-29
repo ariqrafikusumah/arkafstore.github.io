@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { BuildingLibraryIcon, Cog6ToothIcon, QrCodeIcon, TagIcon, WalletIcon } from '@heroicons/react/24/solid';
-import Login from '../auth/Login';
+import { Login } from '../auth';
 import { auth } from '../database/firebase';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -86,15 +87,15 @@ function Dashboard() {
         <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 mt-3" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
-              <a href="#" className="inline-flex no-underline items-center text-sm font-medium text-gray-700 hover:text-indigo-600 ">
+              <Link to="#" className="inline-flex no-underline items-center text-sm font-medium text-gray-700 hover:text-indigo-600 ">
                 <svg aria-hidden="true" className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
                 Dashboard
-              </a>
+              </Link>
             </li>
             <li>
               <div className="flex items-center">
                 <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                <a href="#" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 "></a>
+                <Link to="#" className="ml-1 text-sm font-medium text-gray-700 hover:text-indigo-600 md:ml-2 "></Link>
               </div>
             </li>
           </ol>
@@ -107,7 +108,7 @@ function Dashboard() {
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Product</h1>
         <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
-          <a href="/admin/mobile-legend" className=' no-underline'>
+          <Link to="/admin/mobile-legend" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -121,8 +122,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/valorant" className=' no-underline'>
+          </Link>
+          <Link to="/admin/valorant" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -136,8 +137,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/free-fire" className=' no-underline'>
+          </Link>
+          <Link to="/admin/free-fire" className=' no-underline'>
             <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -151,8 +152,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/pubg-mobile" className=' no-underline'>
+          </Link>
+          <Link to="/admin/pubg-mobile" className=' no-underline'>
             <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -166,8 +167,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/higgs-domino" className=' no-underline'>
+          </Link>
+          <Link to="/admin/higgs-domino" className=' no-underline'>
             <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -181,8 +182,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/genshin-impact" className=' no-underline'>
+          </Link>
+          <Link to="/admin/genshin-impact" className=' no-underline'>
             <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -196,11 +197,11 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Payment</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="/admin/qris" className=' no-underline'>
+          <Link to="/admin/qris" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -212,8 +213,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/bank" className=' no-underline'>
+          </Link>
+          <Link to="/admin/bank" className=' no-underline'>
             <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -225,8 +226,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/e-wallet" className=' no-underline'>
+          </Link>
+          <Link to="/admin/e-wallet" className=' no-underline'>
             <div className="hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -238,11 +239,11 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Category</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="/admin/category-game" className=' no-underline'>
+          <Link to="/admin/category-game" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -254,11 +255,11 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
         <h1 className="text-3xl font-bold mb-10 mt-10">- Setting</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="/admin/banner-setting" className=' no-underline'>
+          <Link to="/admin/banner-setting" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -270,8 +271,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/pop-up" className=' no-underline'>
+          </Link>
+          <Link to="/admin/pop-up" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -283,8 +284,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/whatsapp-setting" className=' no-underline'>
+          </Link>
+          <Link to="/admin/whatsapp-setting" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -296,8 +297,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
-          <a href="/admin/api" className=' no-underline'>
+          </Link>
+          <Link to="/admin/api" className=' no-underline'>
             <div className=" hover:text-indigo-500 hover:bg-indigo-200 border shadow rounded-lg p-6">
               <div className='flex gap-2'>
                 <div className='py-3'>
@@ -309,7 +310,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
       </div>
     </>

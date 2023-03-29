@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { Modal, Spinner } from 'react-bootstrap';
 import { db } from '../../database/firebase';
 import { ref, onValue } from "firebase/database";
-import { Spinner } from 'react-bootstrap';
-import Payment from '../../components/Payment';
+import { Payment } from '../../components';
 
 export default function Pubgmobile() {
 
@@ -181,9 +179,9 @@ export default function Pubgmobile() {
                                                 <div className=' font-thin italic text-justify text-xs mb-2'>
                                                     Untuk menemukan ID Anda, klik pada ikon karakter. User ID tercantum di bawah nama karakter Anda. Contoh: '5363266446'.
                                                 </div>
-                                                <Button className="flex gap-2 mt-3 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" onClick={handleShow}>
+                                                <button className="flex gap-2 mt-3 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" onClick={handleShow}>
                                                     Petunjuk
-                                                </Button>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -313,9 +311,9 @@ export default function Pubgmobile() {
                                                 <div className=' font-thin italic text-justify text-xs mb-2'>
                                                     Untuk menemukan ID Anda, klik pada ikon karakter. User ID tercantum di bawah nama karakter Anda. Contoh: '5363266446'.
                                                 </div>
-                                                <Button className="flex gap-2 mt-3 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" onClick={handleShow}>
+                                                <button className="flex gap-2 mt-3 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" onClick={handleShow}>
                                                     Petunjuk
-                                                </Button>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

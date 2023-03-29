@@ -7,6 +7,7 @@ import './assets/css/index.css';
 import './assets/css/output.css';
 import './database/firebase'; // Panggil file firebase.js
 import '@heroicons/react/24/solid';
+import 'react-icons/fa';
 
 // import reportWebVitals from './reportWebVitals';
 

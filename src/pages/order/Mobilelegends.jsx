@@ -28,24 +28,52 @@ export default function MobileLegends() {
     const [errorZone_id, setErrorZone_id] = useState('');
     const [errorUsername, setErrorUsername] = useState('');
 
-    // ** Cek Id Game
-    const merchant_id = 'M220514GMHJ5283KD';
-    const game_code = 'mobilelegend';
-    const signature = 'a82629af1aa64f73ba794f7c5498593c';
+    // ** Read Data APi Apigames
+    const [dataApigames, setDataApigames] = useState([]);
+
+    useEffect(() => {
+        onValue(ref(db, `/apigames`), (snapshot) => {
+            setDataApigames([]);
+            const data = snapshot.val();
+            if (data !== null) {
+                setDataApigames((oldArray) => {
+                    const newArray = Object.values(data).sort((a, b) => a.uuid.localeCompare(b.uuid));
+                    return [...oldArray, ...newArray];
+                });
+                setisLoading(false);
+            } else {
+                setisError(true);
+            }
+        }, (error) => {
+            console.log(error);
+            setisError(true);
+        });
+    }, []);
 
     useEffect(() => {
         if (user_id && zone_id) {
-            axios.get(`https://v1.apigames.id/merchant/${merchant_id}/cek-username/${game_code}?user_id=${user_id}${zone_id}&signature=${signature}`)
-                .then(response => {
-                    console.log(response.data);
-                    setUsername(response.data.data.username);
-                })
-                .catch(error => {
-                    console.log(error.response.data.message);
-                    setErrorUsername(error.response.data.error_msg);
-                });
+            dataApigames.forEach((item) => {
+                const merchant_id = item.merchant_id;
+                const game_code = 'mobilelegend';
+                const signature = item.signature;
+
+                axios
+                    .get(
+                        `https://v1.apigames.id/merchant/${merchant_id}/cek-username/${game_code}?user_id=${user_id}${zone_id}&signature=${signature}`
+                    )
+                    .then((response) => {
+                        const data = response.data.data;
+                        console.log(data.username);
+                        setUsername(data.username);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setUsername("User Tidak Ditemukan");
+                        setErrorUsername("User Tidak Ditemukan");
+                    });
+            });
         }
-    }, [user_id, zone_id]);
+    }, [user_id, zone_id, dataApigames]);
 
     // ** Max Input Number 10 Digit
     const handleChangeUser_id = (event) => {
@@ -94,7 +122,10 @@ export default function MobileLegends() {
             } else {
                 setisError(true);
             }
-        })
+        }, (error) => {
+            console.log(error);
+            setisError(true);
+        });
     }, []);
 
     // ** Read Data APi category
@@ -110,7 +141,10 @@ export default function MobileLegends() {
             } else {
                 setisError(true);
             }
-        })
+        }, (error) => {
+            console.log(error);
+            setisError(true);
+        });
     }, [id]);
 
     // ** Read Data APi product
@@ -129,7 +163,10 @@ export default function MobileLegends() {
             } else {
                 setisError(true);
             }
-        })
+        }, (error) => {
+            console.log(error);
+            setisError(true);
+        });
     }, []);
 
     const handleSubmit = (event) => {
@@ -220,7 +257,7 @@ export default function MobileLegends() {
                                                 {errorZone_id && <div className="errorZone_id text-sm text-red-500">{errorZone_id}</div>}
                                             </div>
                                             <div className='relative'>
-                                                <FormControl type="text" id='username' name='username' value={username || (errorUsername && "User Tidak Ditemukan") || "Loading Username ..."} onChange={event => setUsername(event.target.value)} disabled />
+                                                <FormControl type="text" id='username' name='username' value={username || errorUsername || "User Tidak Ditemukan"} onChange={event => setUsername(event.target.value)} disabled />
                                             </div>
                                         </div>
                                         <div>

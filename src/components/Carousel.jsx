@@ -64,7 +64,7 @@ function Carousel() {
                     {dataView.map((item) => (
 
                         <SwiperSlide>
-                            <img className='rounded-xl' src={item.banner} alt="" />
+                            <img className=' rounded-t-xl' src={item.banner} alt="" />
                         </SwiperSlide>
                     ))}
                 </Swiper>
@@ -90,7 +90,7 @@ function Carousel() {
                     {dataView.map((item) => (
 
                         <SwiperSlide>
-                            <img className='rounded-xl' src={item.banner} alt="" />
+                            <img className=' rounded-t-xl' src={item.banner} alt="" />
                         </SwiperSlide>
                     ))}
                 </Swiper>

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { auth, db } from '../database/firebase'
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import Swal from "sweetalert2";
-import { FloatingLabel, Form, FormControl, Spinner } from 'react-bootstrap';
+import { FloatingLabel, Form, FormControl, Spinner, Button, Modal } from 'react-bootstrap';
 import { ref, onValue, update } from "firebase/database";
-import Login from '../auth/Login';
+import { Login } from '../auth';
 
 function WhatsappSetting() {
     const [dataTabel, setDataTabel] = useState('');

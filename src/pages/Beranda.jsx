@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Carousel from '../components/Carousel'
+import { Carousel, Navigator, PopUp } from '../components';
 import Spinner from 'react-bootstrap/Spinner';
-import PopUp from '../components/PupUp'
 import { db } from '../database/firebase';
 import { onValue, ref } from 'firebase/database';
+import { Link } from 'react-router-dom';
+import Running from '../components/Running';
 
 function Beranda() {
 
@@ -62,14 +63,15 @@ function Beranda() {
           <div className='mt-3'>
             <Carousel />
           </div>
+          <Navigator />
           <div>
-            <div className='mt-5 mb-5'>
+            <div className='mt-3 mb-3'>
               <span className='text-2xl font-bold '>GAME TOP UP</span>
             </div>
           </div>
           <div className='grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2 xs:grid-cols-2 xss:grid-cols-2 gap-4'>
             {dataView.map((item) =>
-              item.status === "on" && (
+              item.status === "on" && item.pilih_category === "game" && (
                 <div key={item.uuid}>
                   <div className='rounded-lg'>
                     <div>
@@ -78,9 +80,9 @@ function Beranda() {
                       </div>
                       <div className='text-center font-bold'>{item.category}</div>
                       <div className='text-center'>
-                        <a href={item.link}>
+                        <Link to={item.link}>
                           <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"> Top Up </button>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -88,6 +90,7 @@ function Beranda() {
               ))}
           </div>
         </div>
+        <Running />
       </>
     );
   else {
